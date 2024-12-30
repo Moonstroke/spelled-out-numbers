@@ -13,5 +13,5 @@ public interface NumberSpeller extends LocalizedNumberService {
 	 *
 	 * @return A textual representation of the given number
 	 */
-	public String spellOut(double doubleValue);
+	String spellOut(double doubleValue);
 }
