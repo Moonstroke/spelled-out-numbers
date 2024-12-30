@@ -28,6 +28,18 @@ public class SpelledOutNumber extends Number {
 	}
 
 	/**
+	 * Construct a spelled-out number from its transcription in a given locale.
+	 *
+	 * @param locale        The local in which the number is transcribed
+	 * @param transcription The textual transcription of the number
+	 */
+	public SpelledOutNumber(Locale locale, String transcription) {
+		this.locale = locale;
+		this.transcription = transcription;
+		this.doubleValue = Double.NaN; // TODO
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
