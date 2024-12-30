@@ -33,7 +33,7 @@ public class SpelledOutNumber extends Number {
 
 	/* Compute the transcription of the given value */
 	private static String spellOut(Locale locale, double doubleValue) {
-		return null; // TODO
+		return NumberSpeller.getNumberSpellerFor(locale).spellOut(doubleValue);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class SpelledOutNumber extends Number {
 
 	/* Compute the numeric value represented by the given text */
 	private static double parse(Locale locale, String transcription) {
-		return Double.NaN; // TODO
+		return NumericTextParser.getTextParserFor(locale).parse(transcription);
 	}
 
 	/**
