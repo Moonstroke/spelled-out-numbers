@@ -15,6 +15,12 @@ public class SpelledOutNumber extends Number {
 	private final String transcription;
 
 
+	private SpelledOutNumber(Locale locale, double doubleValue, String transcription) {
+		this.locale = locale;
+		this.transcription = transcription;
+		this.doubleValue = doubleValue;
+	}
+
 	/**
 	 * Construct a spelled-out number from its numeric value for the specified locale.
 	 *
@@ -22,9 +28,7 @@ public class SpelledOutNumber extends Number {
 	 * @param doubleValue The real numeric value
 	 */
 	public SpelledOutNumber(Locale locale, double doubleValue) {
-		this.locale = locale;
-		this.transcription = spellOut(locale, doubleValue);
-		this.doubleValue = doubleValue;
+		this(locale, doubleValue, spellOut(locale, doubleValue));
 	}
 
 	/* Compute the transcription of the given value */
@@ -39,9 +43,7 @@ public class SpelledOutNumber extends Number {
 	 * @param transcription The textual transcription of the number
 	 */
 	public SpelledOutNumber(Locale locale, String transcription) {
-		this.locale = locale;
-		this.transcription = transcription;
-		this.doubleValue = parse(locale, transcription);
+		this(locale, parse(locale, transcription), transcription);
 	}
 
 	/* Compute the numeric value represented by the given text */
