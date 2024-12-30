@@ -4,6 +4,11 @@ import java.util.Locale;
 
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 
+/**
+ * Number speller that supports the default JVM locale, usually {@link Locale#US en-US}.
+ *
+ * It spells numbers in all-lowercase text.
+ */
 public class DefaultNumberSpeller implements NumberSpeller {
 	@Override
 	public Locale getSupportedLocale() {
