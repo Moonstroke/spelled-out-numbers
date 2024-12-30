@@ -1,20 +1,11 @@
 package io.github.moonstroke.spelledoutnumbers;
 
-import java.util.Locale;
-
 /**
  * This interface provides the text-to-numeric translation service.
  *
  * @author Moonstroke
  */
-public interface NumericTextParser {
-	/**
-	 * Return the locale in which this parser computes numeric values.
-	 *
-	 * @return this parser's locale
-	 */
-	Locale getSupportedLocale();
-
+public interface NumericTextParser extends LocalizedNumberService {
 	/**
 	 * Parse the given text into a numeric value, using this parser's locale.
 	 *
