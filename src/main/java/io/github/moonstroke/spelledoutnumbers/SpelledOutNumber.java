@@ -72,6 +72,34 @@ public class SpelledOutNumber extends Number {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof SpelledOutNumber)) {
+			return false;
+		}
+		SpelledOutNumber that = (SpelledOutNumber) o;
+		return this.locale.equals(that.locale) && this.doubleValue == that.doubleValue;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		return locale.hashCode() * 31 & Double.hashCode(doubleValue);
+	}
+
+	/**
+	 * Return the textual transcription, in its locale, of this number.
+	 */
+	@Override
+	public String toString() {
+		return transcription;
+	}
+
+	/**
 	 * Construct a spelled-out number for the same numeric value in a different locale.
 	 *
 	 * @param otherLocale The other locale in which to transcribe this number
