@@ -8,7 +8,7 @@ import java.util.ServiceLoader;
  *
  * @author Moonstroke
  */
-public interface LocalizedNumberService {
+interface LocalizedNumberService {
 	/**
 	 * Return the locale in which this object handles numeric values.
 	 *
