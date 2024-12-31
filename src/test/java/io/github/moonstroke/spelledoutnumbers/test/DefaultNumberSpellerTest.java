@@ -36,8 +36,11 @@ class DefaultNumberSpellerTest {
 				Arguments.of(0., "zero"),
 				Arguments.of(-0., "zero"),
 				Arguments.of(1., "one"),
+				Arguments.of(1.414213, "one point four one four two one three"),
 				Arguments.of(2., "two"),
+				Arguments.of(2.718281, "two point seven one eight two eight one"),
 				Arguments.of(3., "three"),
+				Arguments.of(3.1415926, "three point one four one five nine two six"),
 				Arguments.of(4., "four"),
 				Arguments.of(5., "five"),
 				Arguments.of(6., "six"),
@@ -135,6 +138,15 @@ class DefaultNumberSpellerTest {
 				Arguments.of(98., "ninety-eight"),
 				Arguments.of(99., "ninety-nine"),
 				Arguments.of(100., "one hundred"),
+				Arguments.of(111., "one hundred eleven"),
+				Arguments.of(123.45, "one hundred twenty-three point four five"),
+				Arguments.of(200., "two hundred"),
+				Arguments.of(300., "three hundred"),
+				Arguments.of(321., "three hundred twenty-one"),
+				Arguments.of(1000., "one thousand"),
+				Arguments.of(1234., "one thousand two hundred thirty-three"),
+				Arguments.of(10_000., "ten thousand"),
+				Arguments.of(54_321., "fifty-four thousand three hundred twenty-one"),
 		});
 	}
 }
