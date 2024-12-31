@@ -16,6 +16,7 @@ public interface NumericTextParser extends LocalizedNumberService {
 	 * @return The numeric value represented by the given text
 	 *
 	 * @throws NumberFormatException if the given text does not represent a number in this locale
+	 * @throws NullPointerException if text is null
 	 */
 	double parse(String text) throws NumberFormatException;
 
