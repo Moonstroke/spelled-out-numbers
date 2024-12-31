@@ -19,7 +19,12 @@ class DefaultNumericTextParserTest {
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void testParserCannotParseNull() {
+		assertThrows(NullPointerException.class, () -> parser.parse(null));
+	}
+
+	@Test
+	void testParserCannotParseEmptyString() {
+		assertThrows(NumberFormatException.class, () -> parser.parse(""));
 	}
 }
