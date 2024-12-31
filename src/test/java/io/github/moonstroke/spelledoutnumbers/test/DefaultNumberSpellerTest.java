@@ -1,4 +1,4 @@
-package io.github.moonstroke;
+package io.github.moonstroke.spelledoutnumbers.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
