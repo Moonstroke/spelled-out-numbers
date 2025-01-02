@@ -21,7 +21,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	 * @implNote The special IEEE-754 value negative zero is spelled out unsigned (simply {@code "zero"}).
 	 */
 	@Override
-	public String spellOut(double doubleValue) throws NumberFormatException {
+	public String spellOut(double doubleValue) {
 		if (Double.isNaN(doubleValue)) {
 			return "not a number";
 		}
