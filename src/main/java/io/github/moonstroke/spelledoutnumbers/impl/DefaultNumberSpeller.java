@@ -87,22 +87,20 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			return DIGITS_TEENS[(int) longValue];
 		}
 		if (longValue < 100) {
-			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
-			int remainder = (int) longValue % 10;
-			if (remainder != 0) {
-				transcription += "-" + DIGITS_TEENS[remainder];
-			}
-			return transcription;
+			return constructTranscription(TENS_PREFIXES, (int) longValue / 10 - 2, "ty", longValue % 10, "-");
 		}
 		if (longValue < 1000) {
-			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
-			int remainder = (int) longValue % 100;
-			if (remainder != 0) {
-				transcription += " " + spellOutAsLong(remainder);
-			}
-			return transcription;
+			return constructTranscription(DIGITS_TEENS, (int) longValue / 100, " hundred", longValue % 100, " ");
 		}
 		return ""; // TODO
+	}
+
+	private static String constructTranscription(String[] prefixes, int index, String suffix, long remainder, String remainderPrefix) {
+		String transcription = prefixes[index] + suffix;
+		if (remainder != 0) {
+			transcription += remainderPrefix + spellOutAsLong(remainder);
+		}
+		return transcription;
 	}
 
 	private static String spellOutDecimalPart(double doubleValue) {
