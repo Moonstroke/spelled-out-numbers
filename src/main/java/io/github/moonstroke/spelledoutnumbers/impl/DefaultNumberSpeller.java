@@ -87,26 +87,28 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			return DIGITS_TEENS[(int) longValue];
 		}
 		if (longValue < 100) {
-			return constructTranscription(TENS_PREFIXES, (int) longValue / 10 - 2, "ty", longValue % 10, "-");
-		}
-		if (longValue < 1000) {
-			return constructTranscription(DIGITS_TEENS, (int) longValue / 100, " hundred", longValue % 100, " ");
-		}
-		if (longValue < 1_000_000) {
-			String transcription = spellOutAsLong(longValue / 1000) + " thousand";
-			long remainder = longValue % 1000;
+			/* Structurally similar to constructTranscription but not quite fitting, so not refactored */
+			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
+			int remainder = (int) longValue % 10;
 			if (remainder != 0) {
-				transcription += " " + spellOutAsLong(remainder);
+				transcription += "-" + DIGITS_TEENS[remainder];
 			}
 			return transcription;
+		}
+		if (longValue < 1000) {
+			return constructTranscription(longValue, 100, "hundred");
+		}
+		if (longValue < 1_000_000) {
+			return constructTranscription(longValue, 1000, "thousand");
 		}
 		return ""; // TODO
 	}
 
-	private static String constructTranscription(String[] prefixes, int index, String suffix, long remainder, String remainderPrefix) {
-		String transcription = prefixes[index] + suffix;
+	private static String constructTranscription(long longValue, int rank, String rankName) {
+		String transcription = spellOutAsLong(longValue / rank) + " " + rankName;
+		long remainder = longValue % rank;
 		if (remainder != 0) {
-			transcription += remainderPrefix + spellOutAsLong(remainder);
+			transcription += " " + spellOutAsLong(remainder);
 		}
 		return transcription;
 	}
