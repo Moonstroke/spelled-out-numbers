@@ -33,6 +33,17 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	    "nineteen"
 	};
 
+	private static final String[] TENS_PREFIXES = {
+		"twen",
+		"thir",
+		"for",
+		"fif",
+		"six",
+		"seven",
+		"eigh",
+		"nine"
+	};
+
 
 	@Override
 	public Locale getSupportedLocale() {
@@ -74,6 +85,14 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	private static String spellOutAsLong(long longValue) {
 		if (longValue < 20) {
 			return DIGITS_TEENS[(int) longValue];
+		}
+		if (longValue < 100) {
+			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
+			int remainder = (int) longValue % 10;
+			if (remainder != 0) {
+				transcription += "-" + DIGITS_TEENS[remainder];
+			}
+			return transcription;
 		}
 		return ""; // TODO
 	}
