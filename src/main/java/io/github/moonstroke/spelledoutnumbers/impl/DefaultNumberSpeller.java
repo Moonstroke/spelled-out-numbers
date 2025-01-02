@@ -92,6 +92,14 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		if (longValue < 1000) {
 			return constructTranscription(DIGITS_TEENS, (int) longValue / 100, " hundred", longValue % 100, " ");
 		}
+		if (longValue < 1_000_000) {
+			String transcription = spellOutAsLong(longValue / 1000) + " thousand";
+			long remainder = longValue % 1000;
+			if (remainder != 0) {
+				transcription += " " + spellOutAsLong(remainder);
+			}
+			return transcription;
+		}
 		return ""; // TODO
 	}
 
