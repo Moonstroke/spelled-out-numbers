@@ -40,7 +40,15 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutIntegralPart(double doubleValue) {
-		if (doubleValue == 0) {
+		if (doubleValue < Long.MAX_VALUE) {
+			/* It fits in a long integer. Process it as such */
+			return spellOutAsLong((long) doubleValue);
+		}
+		return ""; // TODO
+	}
+
+	private static String spellOutAsLong(long longValue) {
+		if (longValue == 0) {
 			return "zero";
 		}
 		return ""; // TODO
