@@ -44,6 +44,19 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		"nine"
 	};
 
+	private static final String[] THOUSANDS_SCALE_PREFIXES = {
+		"m",
+		"b",
+		"tr",
+		"quadr",
+		"quint",
+		"sext",
+		"sept",
+		"oct",
+		"non",
+		"dec"
+	};
+
 
 	@Override
 	public Locale getSupportedLocale() {
@@ -75,7 +88,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutIntegralPart(double doubleValue) {
-		if (doubleValue < Long.MAX_VALUE) {
+		if (doubleValue <= Long.MAX_VALUE) {
 			/* It fits in a long integer. Process it as such */
 			return spellOutAsLong((long) doubleValue);
 		}
@@ -101,10 +114,17 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		if (longValue < 1_000_000) {
 			return constructTranscription(longValue, 1000, "thousand");
 		}
+		/* From million to quintillion. Not above, because Long.MAX_VALUE ~~ 9 quintillion */
+		for (int i = 0; i < 5; ++i) {
+			long rank = (long) Math.pow(1000, i + 2);
+			if (longValue / 1000 < rank) { /* Not longValue < rank * 1000 because of long overflow */
+				return constructTranscription(longValue, rank, THOUSANDS_SCALE_PREFIXES[i] + "illion");
+			}
+		}
 		return ""; // TODO
 	}
 
-	private static String constructTranscription(long longValue, int rank, String rankName) {
+	private static String constructTranscription(long longValue, long rank, String rankName) {
 		String transcription = spellOutAsLong(longValue / rank) + " " + rankName;
 		long remainder = longValue % rank;
 		if (remainder != 0) {
