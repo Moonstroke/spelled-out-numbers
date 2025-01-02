@@ -10,7 +10,7 @@ import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
  * It spells numbers in all-lowercase text.
  */
 public class DefaultNumberSpeller implements NumberSpeller {
-	private static final String[] DIGITS = {
+	private static final String[] DIGITS_TEENS = {
 		"zero",
 		"one",
 		"two",
@@ -20,7 +20,17 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		"six",
 		"seven",
 		"eight",
-	    "nine"
+	    "nine",
+	    "ten",
+	    "eleven",
+	    "twelve",
+	    "thirteen",
+	    "fourteen",
+	    "fifteen",
+	    "sixteen",
+	    "seventeen",
+	    "eighteen",
+	    "nineteen"
 	};
 
 
@@ -62,8 +72,8 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutAsLong(long longValue) {
-		if (longValue < 10) {
-			return DIGITS[(int) longValue];
+		if (longValue < 20) {
+			return DIGITS_TEENS[(int) longValue];
 		}
 		return ""; // TODO
 	}
