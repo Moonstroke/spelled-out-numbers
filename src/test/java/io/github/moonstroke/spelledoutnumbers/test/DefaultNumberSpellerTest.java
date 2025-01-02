@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Locale;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -22,5 +23,10 @@ class DefaultNumberSpellerTest {
 	@CsvFileSource(resources = {"/numbers.csv"}, numLinesToSkip = 1)
 	void testSpellerSpellsValidInputs(double input, String expected) {
 		assertEquals(expected, speller.spellOut(input));
+	}
+
+	@Test
+	void testMinusZeroIsTranscribedUnsigned() {
+		assertEquals("zero", speller.spellOut(-0.));
 	}
 }
