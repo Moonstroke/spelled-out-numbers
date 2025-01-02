@@ -33,4 +33,9 @@ class DefaultNumericTextParserTest {
 	void testParserParsesValidValues(double expected, String input) {
 		assertEquals(expected, parser.parse(input));
 	}
+
+	@Test
+	void testMinusZeroIsParsedAsMinusZero() {
+		assertEquals(-0., parser.parse("minus zero"));
+	}
 }
