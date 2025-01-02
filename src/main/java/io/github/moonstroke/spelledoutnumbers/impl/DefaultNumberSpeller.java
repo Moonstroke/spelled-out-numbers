@@ -31,9 +31,22 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		if (Double.isInfinite(doubleValue)) {
 			return "infinity";
 		}
+		String transcription = spellOutIntegralPart(doubleValue);
+		if (Math.rint(doubleValue) < doubleValue) {
+			/* The value has a decimal part */
+			transcription += " point" + spellOutDecimalPart(doubleValue);
+		}
+		return transcription;
+	}
+
+	private static String spellOutIntegralPart(double doubleValue) {
 		if (doubleValue == 0) {
 			return "zero";
 		}
+		return ""; // TODO
+	}
+
+	private static String spellOutDecimalPart(double doubleValue) {
 		return ""; // TODO
 	}
 }
