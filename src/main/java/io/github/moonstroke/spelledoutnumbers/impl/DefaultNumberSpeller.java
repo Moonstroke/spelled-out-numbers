@@ -10,6 +10,20 @@ import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
  * It spells numbers in all-lowercase text.
  */
 public class DefaultNumberSpeller implements NumberSpeller {
+	private static final String[] DIGITS = {
+		"zero",
+		"one",
+		"two",
+		"three",
+		"four",
+		"five",
+		"six",
+		"seven",
+		"eight",
+	    "nine"
+	};
+
+
 	@Override
 	public Locale getSupportedLocale() {
 		return Locale.getDefault();
@@ -48,8 +62,8 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutAsLong(long longValue) {
-		if (longValue == 0) {
-			return "zero";
+		if (longValue < 10) {
+			return DIGITS[(int) longValue];
 		}
 		return ""; // TODO
 	}
