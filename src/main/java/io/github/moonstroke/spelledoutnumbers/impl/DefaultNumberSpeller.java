@@ -15,6 +15,11 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		return Locale.getDefault();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @implNote The special IEEE-754 value negative zero is spelled out unsigned (simply {@code "zero"}).
+	 */
 	@Override
 	public String spellOut(double doubleValue) throws NumberFormatException {
 		if (Double.isNaN(doubleValue)) {

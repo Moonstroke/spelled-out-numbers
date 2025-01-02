@@ -15,6 +15,11 @@ public class DefaultNumericTextParser implements NumericTextParser {
 		return Locale.getDefault();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @implNote The text {@code "minus zero"} is parsed as the special IEEE-754 value negative zero.
+	 */
 	@Override
 	public double parse(String text) throws NumberFormatException {
 		if (text.equals("not a number")) {
