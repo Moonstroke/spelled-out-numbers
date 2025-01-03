@@ -111,7 +111,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			String transcription = spellOutAsLong(longValue / 1000) + " " + "thousand";
+			String transcription = spellOutAsLong(longValue / 1000) + " thousand";
 			long remainder = longValue % 1000;
 			if (remainder != 0) {
 				transcription += " " + spellOutAsLong(remainder);
@@ -119,7 +119,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			return transcription;
 		}
 		if (longValue >= 100) {
-			String transcription = spellOutAsLong(longValue / 100) + " " + "hundred";
+			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
 			long remainder = longValue % 100;
 			if (remainder != 0) {
 				transcription += " " + spellOutAsLong(remainder);
