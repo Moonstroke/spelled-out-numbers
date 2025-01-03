@@ -91,20 +91,20 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
-			return spellOutAsLong((long) doubleValue);
+			return spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4);
 		}
 		return ""; // TODO
 	}
 
-	private static String spellOutAsLong(long longValue) {
-		long rank = 1_000_000_000_000_000_000L;
-		for (int i = 4; i >= 0; --i) {
+	private static String spellOutAsLong(long longValue, long initialRank, int initialRankIndex) {
+		long rank = initialRank;
+		for (int i = initialRankIndex; i >= 0; --i) {
 			if (longValue >= rank) {
 				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
 				String transcription = spellOutThousandGroup(longValue / rank) + " " + rankName;
 				long remainder = longValue % rank;
 				if (remainder != 0) {
-					transcription += " " + spellOutAsLong(remainder);
+					transcription += " " + spellOutAsLong(remainder, rank / 1000, i - 1);
 				}
 				return transcription;
 			}
