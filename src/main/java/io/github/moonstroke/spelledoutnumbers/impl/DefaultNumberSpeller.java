@@ -97,11 +97,12 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutAsLong(long longValue) {
+		long rank = 1_000_000_000_000_000_000L;
 		for (int i = 4; i >= 0; --i) {
-			long rank = (long) Math.pow(1000, i + 2);
 			if (longValue >= rank) {
 				return constructTranscription(longValue, rank, THOUSANDS_SCALE_PREFIXES[i] + "illion");
 			}
+			rank /= 1000;
 		}
 		if (longValue >= 1000) {
 			return constructTranscription(longValue, 1000, "thousand");
