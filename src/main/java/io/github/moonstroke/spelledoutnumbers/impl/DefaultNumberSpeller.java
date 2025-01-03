@@ -100,7 +100,8 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		long rank = 1_000_000_000_000_000_000L;
 		for (int i = 4; i >= 0; --i) {
 			if (longValue >= rank) {
-				String transcription = spellOutAsLong(longValue / rank) + " " + THOUSANDS_SCALE_PREFIXES[i] + "illion";
+				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
+				String transcription = spellOutAsLong(longValue / rank) + " " + rankName;
 				long remainder = longValue % rank;
 				if (remainder != 0) {
 					transcription += " " + spellOutAsLong(remainder);
