@@ -88,8 +88,9 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutIntegralPart(double doubleValue) {
-		if (doubleValue <= Long.MAX_VALUE) {
-			/* It fits in a long integer. Process it as such */
+		if (doubleValue < 0x1p63) {
+			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
+			 * as a IEEE-754 double) => fits in a long. Process it as such */
 			return spellOutAsLong((long) doubleValue);
 		}
 		return ""; // TODO
