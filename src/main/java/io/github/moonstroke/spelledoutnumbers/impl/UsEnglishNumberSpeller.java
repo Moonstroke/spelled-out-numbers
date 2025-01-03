@@ -82,7 +82,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (Double.isInfinite(doubleValue)) {
 			transcriber.append("infinity");
 		} else { /* doubleValue is a finite number */
-			transcriber.append(spellOutIntegralPart(doubleValue));
+			transcriber.append(spellOutIntegralPart(doubleValue, transcriber));
 			if (Math.floor(doubleValue) < doubleValue) {
 				/* The value has a decimal part */
 				transcriber.append(" point");
@@ -92,55 +92,55 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
-	private static String spellOutIntegralPart(double doubleValue) {
+	private static String spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
-			return spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4);
+			return spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4, transcriber);
 		}
 		return ""; // TODO
 	}
 
-	private static String spellOutAsLong(long longValue, long initialRank, int initialRankIndex) {
+	private static String spellOutAsLong(long longValue, long initialRank, int initialRankIndex, StringBuilder transcriber) {
 		long rank = initialRank;
 		for (int i = initialRankIndex; i >= 0; --i) {
 			if (longValue >= rank) {
 				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
-				String transcription = spellOutThousandGroup(longValue / rank) + " " + rankName;
+				String transcription = spellOutThousandGroup(longValue / rank, transcriber) + " " + rankName;
 				long remainder = longValue % rank;
 				if (remainder != 0) {
-					transcription += " " + spellOutAsLong(remainder, rank / 1000, i - 1);
+					transcription += " " + spellOutAsLong(remainder, rank / 1000, i - 1, transcriber);
 				}
 				return transcription;
 			}
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			String transcription = spellOutThousandGroup(longValue / 1000) + " thousand";
+			String transcription = spellOutThousandGroup(longValue / 1000, transcriber) + " thousand";
 			long remainder = longValue % 1000;
 			if (remainder != 0) {
-				transcription += " " + spellOutThousandGroup(remainder);
+				transcription += " " + spellOutThousandGroup(remainder, transcriber);
 			}
 			return transcription;
 		}
-		return spellOutThousandGroup(longValue);
+		return spellOutThousandGroup(longValue, transcriber);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 999 */
-	private static String spellOutThousandGroup(long longValue) {
+	private static String spellOutThousandGroup(long longValue, StringBuilder transcriber) {
 		if (longValue >= 100) {
 			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
 			long remainder = longValue % 100;
 			if (remainder != 0) {
-				transcription += " " + spellOutUnderOneHundred(remainder);
+				transcription += " " + spellOutUnderOneHundred(remainder, transcriber);
 			}
 			return transcription;
 		}
-		return spellOutUnderOneHundred(longValue);
+		return spellOutUnderOneHundred(longValue, transcriber);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 99 */
-	private static String spellOutUnderOneHundred(long longValue) {
+	private static String spellOutUnderOneHundred(long longValue, StringBuilder transcriber) {
 		if (longValue >= 20) {
 			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
 			int remainder = (int) longValue % 10;
