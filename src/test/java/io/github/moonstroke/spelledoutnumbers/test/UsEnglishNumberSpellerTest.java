@@ -10,13 +10,13 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 
-class DefaultNumberSpellerTest {
+class UsEnglishNumberSpellerTest {
 	static NumberSpeller speller;
 
 
 	@BeforeAll
 	static void setUp() {
-		speller = NumberSpeller.getNumberSpellerFor(Locale.getDefault());
+		speller = NumberSpeller.getNumberSpellerFor(Locale.US);
 	}
 
 	@ParameterizedTest
