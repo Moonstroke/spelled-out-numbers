@@ -1,1 +1,1 @@
-io.github.moonstroke.spelledoutnumbers.impl.DefaultNumberSpeller
+io.github.moonstroke.spelledoutnumbers.impl.UsEnglishNumberSpeller

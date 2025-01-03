@@ -1,1 +1,1 @@
-io.github.moonstroke.spelledoutnumbers.impl.DefaultNumericTextParser
+io.github.moonstroke.spelledoutnumbers.impl.UsEnglishNumericTextParser

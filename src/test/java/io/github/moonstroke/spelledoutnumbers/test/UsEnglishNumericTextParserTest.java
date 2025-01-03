@@ -9,13 +9,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import io.github.moonstroke.spelledoutnumbers.NumericTextParser;
 
-class DefaultNumericTextParserTest {
+class UsEnglishNumericTextParserTest {
 	static NumericTextParser parser;
 
 
 	@BeforeAll
 	static void setUp() {
-		parser = NumericTextParser.getTextParserFor(Locale.getDefault());
+		parser = NumericTextParser.getTextParserFor(Locale.US);
 	}
 
 	@Test

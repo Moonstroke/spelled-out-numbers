@@ -6,11 +6,11 @@ import java.util.Locale;
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 
 /**
- * Number speller that supports the default JVM locale, usually {@link Locale#US en-US}.
+ * Number speller that transcribes numbers in {@link Locale#US US English}.
  *
  * It spells numbers in all-lowercase text.
  */
-public class DefaultNumberSpeller implements NumberSpeller {
+public class UsEnglishNumberSpeller implements NumberSpeller {
 	private static final String[] DIGITS_TEENS = {
 		"zero",
 		"one",
@@ -61,7 +61,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 
 	@Override
 	public Locale getSupportedLocale() {
-		return Locale.getDefault();
+		return Locale.US;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 
 	/* Prerequisite: doubleValue has a decimal part (not integral) */
 	private static String spellOutDecimalPart(double doubleValue) {
-		NumberFormat fmt = NumberFormat.getInstance(Locale.getDefault());
+		NumberFormat fmt = NumberFormat.getInstance(Locale.US);
 		String repr = fmt.format(doubleValue);
 		int pointIndex = repr.indexOf('.');
 		if (pointIndex >= 0) {
