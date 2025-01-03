@@ -100,18 +100,32 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		long rank = 1_000_000_000_000_000_000L;
 		for (int i = 4; i >= 0; --i) {
 			if (longValue >= rank) {
-				return constructTranscription(longValue, rank, THOUSANDS_SCALE_PREFIXES[i] + "illion");
+				String transcription = spellOutAsLong(longValue / rank) + " " + THOUSANDS_SCALE_PREFIXES[i] + "illion";
+				long remainder = longValue % rank;
+				if (remainder != 0) {
+					transcription += " " + spellOutAsLong(remainder);
+				}
+				return transcription;
 			}
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			return constructTranscription(longValue, 1000, "thousand");
+			String transcription = spellOutAsLong(longValue / 1000) + " " + "thousand";
+			long remainder = longValue % 1000;
+			if (remainder != 0) {
+				transcription += " " + spellOutAsLong(remainder);
+			}
+			return transcription;
 		}
 		if (longValue >= 100) {
-			return constructTranscription(longValue, 100, "hundred");
+			String transcription = spellOutAsLong(longValue / 100) + " " + "hundred";
+			long remainder = longValue % 100;
+			if (remainder != 0) {
+				transcription += " " + spellOutAsLong(remainder);
+			}
+			return transcription;
 		}
 		if (longValue >= 20) {
-			/* Structurally similar to constructTranscription but not quite fitting, so not refactored */
 			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
 			int remainder = (int) longValue % 10;
 			if (remainder != 0) {
@@ -120,15 +134,6 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			return transcription;
 		}
 		return DIGITS_TEENS[(int) longValue];
-	}
-
-	private static String constructTranscription(long longValue, long rank, String rankName) {
-		String transcription = spellOutAsLong(longValue / rank) + " " + rankName;
-		long remainder = longValue % rank;
-		if (remainder != 0) {
-			transcription += " " + spellOutAsLong(remainder);
-		}
-		return transcription;
 	}
 
 	private static String spellOutDecimalPart(double doubleValue) {
