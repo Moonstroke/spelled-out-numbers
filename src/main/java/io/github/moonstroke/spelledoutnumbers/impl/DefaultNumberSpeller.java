@@ -97,10 +97,19 @@ public class DefaultNumberSpeller implements NumberSpeller {
 	}
 
 	private static String spellOutAsLong(long longValue) {
-		if (longValue < 20) {
-			return DIGITS_TEENS[(int) longValue];
+		for (int i = 4; i >= 0; --i) {
+			long rank = (long) Math.pow(1000, i + 2);
+			if (longValue >= rank) {
+				return constructTranscription(longValue, rank, THOUSANDS_SCALE_PREFIXES[i] + "illion");
+			}
 		}
-		if (longValue < 100) {
+		if (longValue >= 1000) {
+			return constructTranscription(longValue, 1000, "thousand");
+		}
+		if (longValue >= 100) {
+			return constructTranscription(longValue, 100, "hundred");
+		}
+		if (longValue >= 20) {
 			/* Structurally similar to constructTranscription but not quite fitting, so not refactored */
 			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
 			int remainder = (int) longValue % 10;
@@ -109,20 +118,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			}
 			return transcription;
 		}
-		if (longValue < 1000) {
-			return constructTranscription(longValue, 100, "hundred");
-		}
-		if (longValue < 1_000_000) {
-			return constructTranscription(longValue, 1000, "thousand");
-		}
-		/* From million to quintillion. Not above, because Long.MAX_VALUE ~~ 9 quintillion */
-		for (int i = 0; i < 5; ++i) {
-			long rank = (long) Math.pow(1000, i + 2);
-			if (longValue / 1000 < rank) { /* Not longValue < rank * 1000 because of long overflow */
-				return constructTranscription(longValue, rank, THOUSANDS_SCALE_PREFIXES[i] + "illion");
-			}
-		}
-		return ""; // TODO
+		return DIGITS_TEENS[(int) longValue];
 	}
 
 	private static String constructTranscription(long longValue, long rank, String rankName) {
