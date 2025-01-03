@@ -80,7 +80,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			return "infinity";
 		}
 		String transcription = spellOutIntegralPart(doubleValue);
-		if (Math.rint(doubleValue) < doubleValue) {
+		if (Math.floor(doubleValue) < doubleValue) {
 			/* The value has a decimal part */
 			transcription += " point" + spellOutDecimalPart(doubleValue);
 		}
