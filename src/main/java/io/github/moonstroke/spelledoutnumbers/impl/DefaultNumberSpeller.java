@@ -122,10 +122,15 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
 			long remainder = longValue % 100;
 			if (remainder != 0) {
-				transcription += " " + spellOutAsLong(remainder);
+				transcription += " " + spellOutUnderOneHundred(remainder);
 			}
 			return transcription;
 		}
+		return spellOutUnderOneHundred(longValue);
+	}
+
+	/* Prerequisite: 0 <= longValue <= 99 */
+	private static String spellOutUnderOneHundred(long longValue) {
 		if (longValue >= 20) {
 			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
 			int remainder = (int) longValue % 10;
