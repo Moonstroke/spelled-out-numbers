@@ -7,7 +7,7 @@ import io.github.moonstroke.spelledoutnumbers.NumericTextParser;
 /**
  * Text parser that reads numbers transcribed in {@link Locale#US US English}.
  *
- * It only supports all-lowercase text.
+ * @implSpec The parser only accepts all-lowercase text.
  */
 public class UsEnglishNumericTextParser implements NumericTextParser {
 	@Override
