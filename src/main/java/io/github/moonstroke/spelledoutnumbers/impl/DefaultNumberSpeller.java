@@ -1,5 +1,6 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
@@ -147,7 +148,19 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		return DIGITS_TEENS[(int) longValue];
 	}
 
+	/* Prerequisite: doubleValue has a decimal part (not integral) */
 	private static String spellOutDecimalPart(double doubleValue) {
+		NumberFormat fmt = NumberFormat.getInstance(Locale.getDefault());
+		String repr = fmt.format(doubleValue);
+		int pointIndex = repr.indexOf('.');
+		if (pointIndex >= 0) {
+			StringBuilder transcripter = new StringBuilder();
+			for (int i = pointIndex + 1; i < repr.length(); ++i) {
+				char digit = repr.charAt(i);
+				transcripter.append(' ').append(DIGITS_TEENS[digit - '0']);
+			}
+			return transcripter.toString();
+		}
 		return ""; // TODO
 	}
 }
