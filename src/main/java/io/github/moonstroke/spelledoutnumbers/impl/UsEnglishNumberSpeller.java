@@ -74,18 +74,22 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (Double.isNaN(doubleValue)) {
 			return "not a number";
 		}
+		StringBuilder transcriber = new StringBuilder();
 		if (doubleValue < 0) {
-			return "minus " + spellOut(-doubleValue);
+			transcriber.append("minus ");
+			doubleValue = -doubleValue;
 		}
 		if (Double.isInfinite(doubleValue)) {
-			return "infinity";
+			transcriber.append("infinity");
+		} else { /* doubleValue is a finite number */
+			transcriber.append(spellOutIntegralPart(doubleValue));
+			if (Math.floor(doubleValue) < doubleValue) {
+				/* The value has a decimal part */
+				transcriber.append(" point");
+				spellOutDecimalPart(doubleValue, transcriber);
+			}
 		}
-		String transcription = spellOutIntegralPart(doubleValue);
-		if (Math.floor(doubleValue) < doubleValue) {
-			/* The value has a decimal part */
-			transcription += " point" + spellOutDecimalPart(doubleValue);
-		}
-		return transcription;
+		return transcriber.toString();
 	}
 
 	private static String spellOutIntegralPart(double doubleValue) {
@@ -149,18 +153,16 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	}
 
 	/* Prerequisite: doubleValue has a decimal part (not integral) */
-	private static String spellOutDecimalPart(double doubleValue) {
+	private static void spellOutDecimalPart(double doubleValue, StringBuilder transcriber) {
 		NumberFormat fmt = NumberFormat.getInstance(Locale.US);
 		String repr = fmt.format(doubleValue);
 		int pointIndex = repr.indexOf('.');
 		if (pointIndex >= 0) {
-			StringBuilder transcripter = new StringBuilder();
 			for (int i = pointIndex + 1; i < repr.length(); ++i) {
 				char digit = repr.charAt(i);
-				transcripter.append(' ').append(DIGITS_TEENS[digit - '0']);
+				transcriber.append(' ').append(DIGITS_TEENS[digit - '0']);
 			}
-			return transcripter.toString();
 		}
-		return ""; // TODO
+		// TODO
 	}
 }
