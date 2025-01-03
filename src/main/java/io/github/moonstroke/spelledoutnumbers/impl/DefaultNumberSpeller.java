@@ -101,7 +101,7 @@ public class DefaultNumberSpeller implements NumberSpeller {
 		for (int i = 4; i >= 0; --i) {
 			if (longValue >= rank) {
 				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
-				String transcription = spellOutAsLong(longValue / rank) + " " + rankName;
+				String transcription = spellOutThousandGroup(longValue / rank) + " " + rankName;
 				long remainder = longValue % rank;
 				if (remainder != 0) {
 					transcription += " " + spellOutAsLong(remainder);
@@ -111,13 +111,18 @@ public class DefaultNumberSpeller implements NumberSpeller {
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			String transcription = spellOutAsLong(longValue / 1000) + " thousand";
+			String transcription = spellOutThousandGroup(longValue / 1000) + " thousand";
 			long remainder = longValue % 1000;
 			if (remainder != 0) {
-				transcription += " " + spellOutAsLong(remainder);
+				transcription += " " + spellOutThousandGroup(remainder);
 			}
 			return transcription;
 		}
+		return spellOutThousandGroup(longValue);
+	}
+
+	/* Prerequisite: 0 <= longValue <= 999 */
+	private static String spellOutThousandGroup(long longValue) {
 		if (longValue >= 100) {
 			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
 			long remainder = longValue % 100;
