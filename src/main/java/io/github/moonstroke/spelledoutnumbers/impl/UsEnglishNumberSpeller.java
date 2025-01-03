@@ -8,7 +8,7 @@ import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 /**
  * Number speller that transcribes numbers in {@link Locale#US US English}.
  *
- * It spells numbers in all-lowercase text.
+ * @implSpec Numbers are transcribed in lowercase text.
  */
 public class UsEnglishNumberSpeller implements NumberSpeller {
 	private static final String[] DIGITS_TEENS = {
