@@ -122,9 +122,9 @@ Infinity,infinity
 1000000000.,one billion
 1000000000000.,one trillion
 1000000000000000.,one quadrillion
+4503599627370495.5,four quadrillion five hundred three trillion five hundred ninety-nine billion six hundred twenty-seven million three hundred seventy thousand four hundred ninety-five point five
 1000000000000000000.,one quintillion
-9223372036854775807.,nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven
-9223372036854775807.5,nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven point five
+9223372036854774784.,nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-four thousand seven hundred eighty-four
 9223372036854775808.,nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred eight
 1000000000000000000000.,one sextillion
 1000000000000000000000000.,one septillion
