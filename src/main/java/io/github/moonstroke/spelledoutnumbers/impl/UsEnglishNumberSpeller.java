@@ -154,6 +154,8 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 
 	/* Prerequisite: doubleValue has a decimal part (not integral) */
 	private static void spellOutDecimalPart(double doubleValue, StringBuilder transcriber) {
+		/* Hack: format the value to a numeric string and parse the digits
+		 * following the decimal separator */
 		NumberFormat fmt = NumberFormat.getInstance(Locale.US);
 		String repr = fmt.format(doubleValue);
 		int pointIndex = repr.indexOf('.');
