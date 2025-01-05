@@ -157,6 +157,9 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		/* Hack: format the value to a numeric string and parse the digits
 		 * following the decimal separator */
 		NumberFormat fmt = NumberFormat.getInstance(Locale.US);
+		fmt.setGroupingUsed(false);
+		fmt.setMaximumFractionDigits(Integer.MAX_VALUE);
+
 		String repr = fmt.format(doubleValue);
 		int pointIndex = repr.indexOf('.');
 		if (pointIndex >= 0) {
