@@ -1,5 +1,6 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -160,13 +161,15 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		fmt.setGroupingUsed(false);
 		fmt.setMaximumFractionDigits(Integer.MAX_VALUE);
 
-		String repr = fmt.format(doubleValue);
-		int pointIndex = repr.indexOf('.');
-		if (pointIndex >= 0) {
-			for (int i = pointIndex + 1; i < repr.length(); ++i) {
-				char digit = repr.charAt(i);
-				transcriber.append(' ').append(DIGITS_TEENS[digit - '0']);
-			}
+		StringBuffer buffer = new StringBuffer();
+		/* Request boundaries of the decimal (fraction) part of the number */
+		FieldPosition pos = new FieldPosition(NumberFormat.FRACTION_FIELD);
+
+		fmt.format(doubleValue, buffer, pos);
+		String repr = buffer.substring(pos.getBeginIndex(), pos.getEndIndex());
+		for (int i = 0; i < repr.length(); ++i) {
+			char digit = repr.charAt(i);
+			transcriber.append(' ').append(DIGITS_TEENS[digit - '0']);
 		}
 		// TODO
 	}
