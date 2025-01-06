@@ -83,7 +83,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (Double.isInfinite(doubleValue)) {
 			transcriber.append("infinity");
 		} else { /* doubleValue is a finite number */
-			transcriber.append(spellOutIntegralPart(doubleValue, transcriber));
+			spellOutIntegralPart(doubleValue, transcriber);
 			if (Math.floor(doubleValue) < doubleValue) {
 				/* The value has a decimal part */
 				transcriber.append(" point");
@@ -93,64 +93,70 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
-	private static String spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
+	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
-			return spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4, transcriber);
+			spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4, transcriber);
+			return;
 		}
-		return ""; // TODO
+		// TODO
 	}
 
-	private static String spellOutAsLong(long longValue, long initialRank, int initialRankIndex, StringBuilder transcriber) {
+	private static void spellOutAsLong(long longValue, long initialRank, int initialRankIndex, StringBuilder transcriber) {
 		long rank = initialRank;
 		for (int i = initialRankIndex; i >= 0; --i) {
 			if (longValue >= rank) {
 				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
-				String transcription = spellOutThousandGroup(longValue / rank, transcriber) + " " + rankName;
+				spellOutThousandGroup(longValue / rank, transcriber);
+				transcriber.append(' ').append(rankName);
 				long remainder = longValue % rank;
 				if (remainder != 0) {
-					transcription += " " + spellOutAsLong(remainder, rank / 1000, i - 1, transcriber);
+					transcriber.append(' ');
+					spellOutAsLong(remainder, rank / 1000, i - 1, transcriber);
 				}
-				return transcription;
+				return;
 			}
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			String transcription = spellOutThousandGroup(longValue / 1000, transcriber) + " thousand";
+			spellOutThousandGroup(longValue / 1000, transcriber);
+			transcriber.append(" thousand");
 			long remainder = longValue % 1000;
 			if (remainder != 0) {
-				transcription += " " + spellOutThousandGroup(remainder, transcriber);
+				transcriber.append(' ');
+				spellOutThousandGroup(remainder, transcriber);
 			}
-			return transcription;
+			return;
 		}
-		return spellOutThousandGroup(longValue, transcriber);
+		spellOutThousandGroup(longValue, transcriber);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 999 */
-	private static String spellOutThousandGroup(long longValue, StringBuilder transcriber) {
+	private static void spellOutThousandGroup(long longValue, StringBuilder transcriber) {
 		if (longValue >= 100) {
-			String transcription = DIGITS_TEENS[(int) longValue / 100] + " hundred";
+			transcriber.append(DIGITS_TEENS[(int) longValue / 100]).append(" hundred");
 			long remainder = longValue % 100;
 			if (remainder != 0) {
-				transcription += " " + spellOutUnderOneHundred(remainder, transcriber);
+				transcriber.append(' ');
+				spellOutUnderOneHundred(remainder, transcriber);
 			}
-			return transcription;
+			return;
 		}
-		return spellOutUnderOneHundred(longValue, transcriber);
+		spellOutUnderOneHundred(longValue, transcriber);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 99 */
-	private static String spellOutUnderOneHundred(long longValue, StringBuilder transcriber) {
+	private static void spellOutUnderOneHundred(long longValue, StringBuilder transcriber) {
 		if (longValue >= 20) {
-			String transcription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
+			transcriber.append(TENS_PREFIXES[(int) longValue / 10 - 2]).append("ty");
 			int remainder = (int) longValue % 10;
 			if (remainder != 0) {
-				transcription += "-" + DIGITS_TEENS[remainder];
+				transcriber.append('-').append(DIGITS_TEENS[remainder]);
 			}
-			return transcription;
+			return;
 		}
-		return DIGITS_TEENS[(int) longValue];
+		transcriber.append(DIGITS_TEENS[(int) longValue]);
 	}
 
 	/* Prerequisite: doubleValue has a decimal part (not integral) */
