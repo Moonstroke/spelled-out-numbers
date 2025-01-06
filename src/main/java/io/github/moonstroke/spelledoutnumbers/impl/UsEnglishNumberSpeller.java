@@ -97,15 +97,18 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
-			spellOutAsLong((long) doubleValue, 1_000_000_000_000_000_000L, 4, transcriber);
+			spellOutAsLong((long) doubleValue, transcriber);
 			return;
 		}
 		// TODO
 	}
 
-	private static void spellOutAsLong(long longValue, long initialRank, int initialRankIndex, StringBuilder transcriber) {
-		long rank = initialRank;
-		for (int i = initialRankIndex; i >= 0; --i) {
+	private static void spellOutAsLong(long longValue, StringBuilder transcriber) {
+		/* A quintillion is the highest power of a thousand (a "rank") in the range of a long */
+		long rank = 1_000_000_000_000_000_000L;
+		/* ... and 4 is the index of the quintillion's prefix in the ranks array. For longs,
+		 * we won't go above this */
+		for (int i = 4; i >= 0; --i) {
 			if (longValue >= rank) {
 				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
 				spellOutThousandGroup(longValue / rank, transcriber);
