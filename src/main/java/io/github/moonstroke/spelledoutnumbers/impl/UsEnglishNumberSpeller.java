@@ -111,11 +111,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 				spellOutThousandGroup(longValue / rank, transcriber);
 				transcriber.append(' ').append(rankName);
 				long remainder = longValue % rank;
-				if (remainder != 0) {
-					transcriber.append(' ');
-					spellOutAsLong(remainder, rank / 1000, i - 1, transcriber);
+				if (remainder == 0) {
+					return;
 				}
-				return;
+				transcriber.append(' ');
+				longValue = remainder;
 			}
 			rank /= 1000;
 		}
@@ -123,11 +123,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutThousandGroup(longValue / 1000, transcriber);
 			transcriber.append(" thousand");
 			long remainder = longValue % 1000;
-			if (remainder != 0) {
-				transcriber.append(' ');
-				spellOutThousandGroup(remainder, transcriber);
+			if (remainder == 0) {
+				return;
 			}
-			return;
+			transcriber.append(' ');
+			longValue = remainder;
 		}
 		spellOutThousandGroup(longValue, transcriber);
 	}
@@ -137,11 +137,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (longValue >= 100) {
 			transcriber.append(DIGITS_TEENS[(int) longValue / 100]).append(" hundred");
 			long remainder = longValue % 100;
-			if (remainder != 0) {
-				transcriber.append(' ');
-				spellOutUnderOneHundred(remainder, transcriber);
+			if (remainder == 0) {
+				return;
 			}
-			return;
+			transcriber.append(' ');
+			longValue = remainder;
 		}
 		spellOutUnderOneHundred(longValue, transcriber);
 	}
@@ -151,10 +151,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (longValue >= 20) {
 			transcriber.append(TENS_PREFIXES[(int) longValue / 10 - 2]).append("ty");
 			int remainder = (int) longValue % 10;
-			if (remainder != 0) {
-				transcriber.append('-').append(DIGITS_TEENS[remainder]);
+			if (remainder == 0) {
+				return;
 			}
-			return;
+			transcriber.append('-');
+			longValue = remainder;
 		}
 		transcriber.append(DIGITS_TEENS[(int) longValue]);
 	}
