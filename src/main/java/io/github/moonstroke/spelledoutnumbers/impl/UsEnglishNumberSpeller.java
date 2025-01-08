@@ -22,17 +22,17 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"six",
 		"seven",
 		"eight",
-	    "nine",
-	    "ten",
-	    "eleven",
-	    "twelve",
-	    "thirteen",
-	    "fourteen",
-	    "fifteen",
-	    "sixteen",
-	    "seventeen",
-	    "eighteen",
-	    "nineteen"
+		"nine",
+		"ten",
+		"eleven",
+		"twelve",
+		"thirteen",
+		"fourteen",
+		"fifteen",
+		"sixteen",
+		"seventeen",
+		"eighteen",
+		"nineteen"
 	};
 
 	private static final String[] TENS_PREFIXES = {
