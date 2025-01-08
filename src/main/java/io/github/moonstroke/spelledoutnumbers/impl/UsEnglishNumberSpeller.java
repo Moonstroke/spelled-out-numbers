@@ -138,7 +138,8 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	/* Prerequisite: 0 <= longValue <= 999 */
 	private static void spellOutThousandGroup(long longValue, StringBuilder transcriber) {
 		if (longValue >= 100) {
-			transcriber.append(DIGITS_TEENS[(int) longValue / 100]).append(" hundred");
+			spellOutDigit(longValue / 100, transcriber);
+			transcriber.append(" hundred");
 			long remainder = longValue % 100;
 			if (remainder == 0) {
 				return;
@@ -160,6 +161,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			transcriber.append('-');
 			longValue = remainder;
 		}
+		spellOutDigit(longValue, transcriber);
+	}
+
+	/* Prerequisite: 0 <= longValue <= 19 */
+	private static void spellOutDigit(long longValue, StringBuilder transcriber) {
 		transcriber.append(DIGITS_TEENS[(int) longValue]);
 	}
 
