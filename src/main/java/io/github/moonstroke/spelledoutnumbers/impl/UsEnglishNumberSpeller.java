@@ -163,19 +163,25 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		transcriber.append(DIGITS_TEENS[(int) longValue]);
 	}
 
+
+	private static final NumberFormat FMT = NumberFormat.getInstance(Locale.US);
+
+	static {
+		FMT.setGroupingUsed(false);
+		FMT.setMaximumFractionDigits(Integer.MAX_VALUE);
+	}
+
+
 	/* Prerequisite: doubleValue has a decimal part (not integral) */
 	private static void spellOutDecimalPart(double doubleValue, StringBuilder transcriber) {
 		/* Hack: format the value to a numeric string and parse the digits
 		 * following the decimal separator */
-		NumberFormat fmt = NumberFormat.getInstance(Locale.US);
-		fmt.setGroupingUsed(false);
-		fmt.setMaximumFractionDigits(Integer.MAX_VALUE);
 
 		StringBuffer buffer = new StringBuffer();
 		/* Request boundaries of the decimal (fraction) part of the number */
 		FieldPosition pos = new FieldPosition(NumberFormat.FRACTION_FIELD);
 
-		fmt.format(doubleValue, buffer, pos);
+		FMT.format(doubleValue, buffer, pos);
 		for (int i = pos.getBeginIndex(); i < pos.getEndIndex(); ++i) {
 			char digit = buffer.charAt(i);
 			transcriber.append(' ').append(DIGITS_TEENS[digit - '0']);
