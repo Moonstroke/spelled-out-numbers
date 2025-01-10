@@ -59,8 +59,12 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"dec"
 	};
 
+	/* Prerequisite: 0 <= rankIndex <= 10 */
 	private static String getThousandsRankName(int rankIndex) {
-		return THOUSANDS_SCALE_PREFIXES[rankIndex] + "illion";
+		if (rankIndex == 0) {
+			return "thousand";
+		}
+		return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
 	}
 
 
@@ -112,7 +116,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		long rank = 1_000_000_000_000_000_000L;
 		/* ... and 4 is the index of the quintillion's prefix in the ranks array. For longs,
 		 * we won't go above this */
-		for (int i = 4; i >= 0; --i) {
+		for (int i = 5; i > 0; --i) {
 			if (longValue >= rank) {
 				String rankName = getThousandsRankName(i);
 				spellOutThousandGroup(longValue / rank, transcriber);
