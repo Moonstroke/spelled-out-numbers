@@ -59,12 +59,15 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"dec"
 	};
 
-	/* Prerequisite: 0 <= rankIndex <= 10 */
+	/* Prerequisite: 0 <= rankIndex < 1000 */
 	private static String getThousandsRankName(int rankIndex) {
 		if (rankIndex == 0) {
 			return "thousand";
 		}
-		return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
+		if (rankIndex <= 10) {
+			return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
+		}
+		throw new UnsupportedOperationException("Conway-Wechsler scale not implemented yet");
 	}
 
 
