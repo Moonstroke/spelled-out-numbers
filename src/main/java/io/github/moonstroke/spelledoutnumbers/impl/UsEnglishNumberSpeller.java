@@ -59,6 +59,10 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"dec"
 	};
 
+	private static String getThousandsRankName(int rankIndex) {
+		return THOUSANDS_SCALE_PREFIXES[rankIndex] + "illion";
+	}
+
 
 	@Override
 	public Locale getSupportedLocale() {
@@ -110,7 +114,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		 * we won't go above this */
 		for (int i = 4; i >= 0; --i) {
 			if (longValue >= rank) {
-				String rankName = THOUSANDS_SCALE_PREFIXES[i] + "illion";
+				String rankName = getThousandsRankName(i);
 				spellOutThousandGroup(longValue / rank, transcriber);
 				transcriber.append(' ').append(rankName);
 				long remainder = longValue % rank;
