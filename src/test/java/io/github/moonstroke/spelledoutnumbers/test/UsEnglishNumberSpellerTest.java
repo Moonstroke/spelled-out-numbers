@@ -20,7 +20,7 @@ class UsEnglishNumberSpellerTest {
 	}
 
 	@ParameterizedTest
-	@CsvFileSource(resources = {"/numbers.csv"}, numLinesToSkip = 1)
+	@CsvFileSource(resources = {"/numbers.csv"}, numLinesToSkip = 1, maxCharsPerColumn = 4500)
 	void testSpellerSpellsValidInputs(double input, String expected) {
 		assertEquals(expected, speller.spellOut(input));
 	}
