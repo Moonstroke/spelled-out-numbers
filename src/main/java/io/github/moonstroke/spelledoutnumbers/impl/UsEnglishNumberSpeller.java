@@ -111,7 +111,23 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutAsLong((long) doubleValue, transcriber);
 			return;
 		}
-		// TODO
+		double rank = 1e306;
+		for (int i = 102; i >= 5; ++i) {
+			if (doubleValue > rank) {
+				String rankName = getThousandsRankName(i);
+				spellOutThousandGroup((long) (doubleValue / rank), transcriber);
+				transcriber.append(' ').append(rankName);
+				double remainder = doubleValue % rank;
+				if (remainder == 0) {
+					return;
+				}
+				transcriber.append(' ');
+				doubleValue = remainder;
+			}
+			rank /= 1000.;
+		}
+		/* Here, what is left of doubleValue is under a quintillion, and is therefore in long range */
+		spellOutAsLong((long) doubleValue, transcriber);
 	}
 
 	private static void spellOutAsLong(long longValue, StringBuilder transcriber) {
