@@ -59,6 +59,42 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"dec"
 	};
 
+	private static final String[] ZILLIONS_UNITS_PREFIXES = {
+		"un",
+		"duo",
+		"tre",
+		"quattuor",
+		"quin",
+		"se",
+		"septe",
+		"octo",
+		"nove",
+	};
+
+	private static final String[] ZILLIONS_TENS_PREFIXES = {
+		"dec",
+		"vigint",
+		"trigint",
+		"quadragint",
+		"quinquagint",
+		"sexagint",
+		"septagint",
+		"octogint",
+		"nonagint",
+	};
+
+	private static final String[] ZILLIONS_HUNDREDS_PREFIXES = {
+		"cent",
+		"ducent",
+		"trecent",
+		"quadringent",
+		"quingent",
+		"sescent",
+		"septingent",
+		"octigent",
+		"nonigent",
+	};
+
 	/* Prerequisite: 0 <= rankIndex < 1000 */
 	private static String getThousandsRankName(int rankIndex) {
 		if (rankIndex == 0) {
