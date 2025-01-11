@@ -103,7 +103,42 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (rankIndex <= 10) {
 			return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
 		}
-		throw new UnsupportedOperationException("Conway-Wechsler scale not implemented yet");
+		int rankIndexUnit = rankIndex % 10;
+		int rankIndexTen = (rankIndex / 10) % 10;
+		int rankIndexHundred = rankIndex / 100;
+		String rankName = "";
+		if (rankIndexUnit != 0) {
+			rankName = ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1];
+			if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
+				rankName += "s";
+			} else if (rankIndexUnit == 6) {
+				if (2 <= rankIndexTen && rankIndexTen <= 5) {
+					rankName += "s";
+				} else if (rankIndexTen == 8) {
+					rankName += "x";
+				}
+			} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+				if (rankIndexTen == 2 || rankIndexTen == 8) {
+					rankName += "m";
+				} else if (rankIndexTen != 9) {
+					rankName += "n";
+				}
+			}
+		}
+		if (rankIndexTen != 0) {
+			rankName += ZILLIONS_TENS_PREFIXES[rankIndexTen - 1];
+			if (rankIndexHundred != 0) {
+				if (rankIndexTen == 1 || rankIndexTen == 2) {
+					rankName += "i";
+				} else {
+					rankName += "a";
+				}
+			}
+		}
+		if (rankIndexHundred != 0) {
+			rankName += ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1];
+		}
+		return rankName;
 	}
 
 
@@ -148,7 +183,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			return;
 		}
 		double rank = 1e306;
-		for (int i = 102; i >= 5; ++i) {
+		for (int i = 102; i >= 5; --i) {
 			if (doubleValue > rank) {
 				String rankName = getThousandsRankName(i);
 				spellOutThousandGroup((long) (doubleValue / rank), transcriber);
