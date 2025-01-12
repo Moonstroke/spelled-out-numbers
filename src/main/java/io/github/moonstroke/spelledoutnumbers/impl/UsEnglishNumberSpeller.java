@@ -187,8 +187,8 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			return;
 		}
 		double rank = 1e306;
-		for (int i = 102; i >= 5; --i) {
-			if (doubleValue > rank) {
+		for (int i = 101; i > 5; --i) {
+			if (doubleValue >= rank) {
 				String rankName = getThousandsRankName(i);
 				spellOutThousandGroup((long) (doubleValue / rank), transcriber);
 				transcriber.append(' ').append(rankName);
