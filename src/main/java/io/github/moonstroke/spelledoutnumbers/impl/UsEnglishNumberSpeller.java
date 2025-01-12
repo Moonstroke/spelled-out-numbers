@@ -2,6 +2,8 @@ package io.github.moonstroke.spelledoutnumbers.impl;
 
 import java.text.FieldPosition;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
@@ -180,33 +182,38 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 
 	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
+		List<String> words = new ArrayList<>();
+		
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
-			spellOutAsLong((long) doubleValue, transcriber);
-			return;
-		}
-		double rank = 1e306;
-		for (int i = 101; i > 5; --i) {
-			if (doubleValue >= rank) {
-				String rankName = getThousandsRankName(i);
-				spellOutThousandGroup((long) (doubleValue / rank), transcriber);
-				transcriber.append(' ').append(rankName);
-				double remainder = doubleValue % rank;
-				if (remainder == 0) {
-					return;
+			spellOutAsLong((long) doubleValue, words);
+		} else {
+			double rank = 1e306;
+			for (int i = 101; i > 5; --i) {
+				if (doubleValue >= rank) {
+					String rankName = getThousandsRankName(i);
+					spellOutThousandGroup((long) (doubleValue / rank), words);
+					words.add(rankName);
+					double remainder = doubleValue % rank;
+					if (remainder == 0) {
+						return;
+					}
+					doubleValue = remainder;
 				}
-				transcriber.append(' ');
-				doubleValue = remainder;
+				rank /= 1000.;
 			}
-			rank /= 1000.;
+			/* Here, what is left of doubleValue is under a quintillion, and is therefore in long range */
+			spellOutAsLong((long) doubleValue, words);
 		}
-		/* Here, what is left of doubleValue is under a quintillion, and is therefore in long range */
-		spellOutAsLong((long) doubleValue, transcriber);
+		transcriber.append(words.get(0));
+		for (int i = 1; i < words.size(); ++i) {
+			transcriber.append(' ').append(words.get(i));
+		}
 	}
 
 	/* Prerequisite: 0 <= longValue <= Long.MAX_VALUE */
-	private static void spellOutAsLong(long longValue, StringBuilder transcriber) {
+	private static void spellOutAsLong(long longValue, List<String> words) {
 		/* A quintillion is the highest power of a thousand (a "rank") in the range of a long */
 		long rank = 1_000_000_000_000_000_000L;
 		/* ... and 4 is the index of the quintillion's prefix in the ranks array. For longs,
@@ -214,62 +221,59 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		for (int i = 5; i > 0; --i) {
 			if (longValue >= rank) {
 				String rankName = getThousandsRankName(i);
-				spellOutThousandGroup(longValue / rank, transcriber);
-				transcriber.append(' ').append(rankName);
+				spellOutThousandGroup(longValue / rank, words);
+				words.add(rankName);
 				long remainder = longValue % rank;
 				if (remainder == 0) {
 					return;
 				}
-				transcriber.append(' ');
 				longValue = remainder;
 			}
 			rank /= 1000;
 		}
 		if (longValue >= 1000) {
-			spellOutThousandGroup(longValue / 1000, transcriber);
-			transcriber.append(" thousand");
+			spellOutThousandGroup(longValue / 1000, words);
+			words.add("thousand");
 			long remainder = longValue % 1000;
 			if (remainder == 0) {
 				return;
 			}
-			transcriber.append(' ');
 			longValue = remainder;
 		}
-		spellOutThousandGroup(longValue, transcriber);
+		spellOutThousandGroup(longValue, words);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 999 */
-	private static void spellOutThousandGroup(long longValue, StringBuilder transcriber) {
+	private static void spellOutThousandGroup(long longValue, List<String> words) {
 		if (longValue >= 100) {
-			spellOutDigit(longValue / 100, transcriber);
-			transcriber.append(" hundred");
+			spellOutDigit(longValue / 100, words);
+			words.add("hundred");
 			long remainder = longValue % 100;
 			if (remainder == 0) {
 				return;
 			}
-			transcriber.append(' ');
 			longValue = remainder;
 		}
-		spellOutUnderOneHundred(longValue, transcriber);
+		spellOutUnderOneHundred(longValue, words);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 99 */
-	private static void spellOutUnderOneHundred(long longValue, StringBuilder transcriber) {
+	private static void spellOutUnderOneHundred(long longValue, List<String> words) {
 		if (longValue >= 20) {
-			transcriber.append(TENS_PREFIXES[(int) longValue / 10 - 2]).append("ty");
+			String groupTranscription = TENS_PREFIXES[(int) longValue / 10 - 2] + "ty";
 			int remainder = (int) longValue % 10;
-			if (remainder == 0) {
-				return;
+			if (remainder != 0) {
+				groupTranscription += "-" + DIGITS_TEENS[remainder];
 			}
-			transcriber.append('-');
-			longValue = remainder;
+			words.add(groupTranscription);
+		} else {
+			spellOutDigit(longValue, words);
 		}
-		spellOutDigit(longValue, transcriber);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 19 */
-	private static void spellOutDigit(long longValue, StringBuilder transcriber) {
-		transcriber.append(DIGITS_TEENS[(int) longValue]);
+	private static void spellOutDigit(long longValue, List<String> words) {
+		words.add(DIGITS_TEENS[(int) longValue]);
 	}
 
 
