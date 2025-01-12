@@ -157,6 +157,9 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (Double.isNaN(doubleValue)) {
 			return "not a number";
 		}
+		if (doubleValue == 0) {
+			return "zero";
+		}
 		StringBuilder transcriber = new StringBuilder();
 		if (doubleValue < 0) {
 			transcriber.append("minus ");
