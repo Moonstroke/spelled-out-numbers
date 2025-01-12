@@ -178,6 +178,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
+	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
@@ -204,6 +205,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		spellOutAsLong((long) doubleValue, transcriber);
 	}
 
+	/* Prerequisite: 0 <= longValue <= Long.MAX_VALUE */
 	private static void spellOutAsLong(long longValue, StringBuilder transcriber) {
 		/* A quintillion is the highest power of a thousand (a "rank") in the range of a long */
 		long rank = 1_000_000_000_000_000_000L;
