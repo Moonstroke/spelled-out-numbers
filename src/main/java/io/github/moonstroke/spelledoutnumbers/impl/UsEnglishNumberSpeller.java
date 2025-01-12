@@ -138,7 +138,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (rankIndexHundred != 0) {
 			rankName += ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1];
 		}
-		return rankName;
+		return rankName + "illion";
 	}
 
 
