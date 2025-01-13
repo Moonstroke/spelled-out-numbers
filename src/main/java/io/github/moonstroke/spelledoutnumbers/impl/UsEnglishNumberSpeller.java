@@ -183,78 +183,59 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		List<String> words = new ArrayList<>();
-		
+
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
 			spellOutAsLong((long) doubleValue, words);
 		} else {
-			double rank = 1e306;
-			for (int i = 101; i > 5; --i) {
-				if (doubleValue >= rank) {
-					String rankName = getThousandsRankName(i);
-					spellOutThousandGroup((long) (doubleValue / rank), words);
-					words.add(rankName);
-					double remainder = doubleValue % rank;
-					if (remainder == 0) {
-						return;
-					}
-					doubleValue = remainder;
+			spellOutThousandGroup((long) (doubleValue % 1000.), words);
+			for (int i = 0; i < 102; ++i) {
+				doubleValue /= 1000.;
+				if (doubleValue == 0) {
+					break;
 				}
-				rank /= 1000.;
+				long thisGroup = (long) (doubleValue % 1000.);
+				if (thisGroup > 0) {
+					String rankName = getThousandsRankName(i);
+					words.add(rankName);
+					spellOutThousandGroup(thisGroup, words);
+				}
 			}
-			/* Here, what is left of doubleValue is under a quintillion, and is therefore in long range */
-			spellOutAsLong((long) doubleValue, words);
+		}
+		for (int i = words.size() - 1; i > 0; --i) {
+			transcriber.append(words.get(i)).append(' ');
 		}
 		transcriber.append(words.get(0));
-		for (int i = 1; i < words.size(); ++i) {
-			transcriber.append(' ').append(words.get(i));
-		}
 	}
 
 	/* Prerequisite: 0 <= longValue <= Long.MAX_VALUE */
 	private static void spellOutAsLong(long longValue, List<String> words) {
 		/* A quintillion is the highest power of a thousand (a "rank") in the range of a long */
-		long rank = 1_000_000_000_000_000_000L;
-		/* ... and 4 is the index of the quintillion's prefix in the ranks array. For longs,
+		/* ... and 5 is the index of the quintillion's prefix in the ranks array. For longs,
 		 * we won't go above this */
-		for (int i = 5; i > 0; --i) {
-			if (longValue >= rank) {
+		spellOutThousandGroup(longValue % 1000, words);
+		for (int i = 0; i < 6; ++i) {
+			longValue /= 1000;
+			if (longValue == 0) {
+				break;
+			}
+			long thisGroup2 = longValue % 1000;
+			if (thisGroup2 > 0) {
 				String rankName = getThousandsRankName(i);
-				spellOutThousandGroup(longValue / rank, words);
 				words.add(rankName);
-				long remainder = longValue % rank;
-				if (remainder == 0) {
-					return;
-				}
-				longValue = remainder;
+				spellOutThousandGroup(thisGroup2, words);
 			}
-			rank /= 1000;
 		}
-		if (longValue >= 1000) {
-			spellOutThousandGroup(longValue / 1000, words);
-			words.add("thousand");
-			long remainder = longValue % 1000;
-			if (remainder == 0) {
-				return;
-			}
-			longValue = remainder;
-		}
-		spellOutThousandGroup(longValue, words);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 999 */
 	private static void spellOutThousandGroup(long longValue, List<String> words) {
+		spellOutUnderOneHundred(longValue % 100, words);
 		if (longValue >= 100) {
-			spellOutDigit(longValue / 100, words);
 			words.add("hundred");
-			long remainder = longValue % 100;
-			if (remainder == 0) {
-				return;
-			}
-			longValue = remainder;
+			spellOutDigit(longValue / 100, words);
 		}
-		spellOutUnderOneHundred(longValue, words);
 	}
 
 	/* Prerequisite: 0 <= longValue <= 99 */
@@ -266,7 +247,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 				groupTranscription += "-" + DIGITS_TEENS[remainder];
 			}
 			words.add(groupTranscription);
-		} else {
+		} else if (longValue > 0) {
 			spellOutDigit(longValue, words);
 		}
 	}
