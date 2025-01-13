@@ -191,16 +191,18 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		} else {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
 			for (int i = 0; i < 102; ++i) {
-				doubleValue /= 1000.;
-				if (doubleValue == 0) {
+				if ((int) doubleValue / 1000 == 0) {
 					break;
 				}
-				long thisGroup = (long) (doubleValue % 1000.);
+				/* Clip the current thousands group on both sides to avoid inaccurate rounding
+				 * in big numbers */
+				double thisGroup = (doubleValue % 1e6) / 1000.;
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
-					spellOutThousandGroup(thisGroup, words);
+					spellOutThousandGroup((long) thisGroup, words);
 				}
+				doubleValue /= 1000;
 			}
 		}
 		for (int i = words.size() - 1; i > 0; --i) {
@@ -220,11 +222,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			if (longValue == 0) {
 				break;
 			}
-			long thisGroup2 = longValue % 1000;
-			if (thisGroup2 > 0) {
+			long thisGroup = longValue % 1000;
+			if (thisGroup > 0) {
 				String rankName = getThousandsRankName(i);
 				words.add(rankName);
-				spellOutThousandGroup(thisGroup2, words);
+				spellOutThousandGroup(thisGroup, words);
 			}
 		}
 	}
