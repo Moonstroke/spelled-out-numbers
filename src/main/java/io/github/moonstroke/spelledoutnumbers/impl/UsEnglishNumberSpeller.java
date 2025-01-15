@@ -196,11 +196,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 				}
 				/* Clip the current thousands group on both sides to avoid inaccurate rounding
 				 * in big numbers */
-				double thisGroup = (doubleValue % 1e6) / 1000.;
+				long thisGroup = (long) (doubleValue % 1e6) / 1000;
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
-					spellOutThousandGroup((long) thisGroup, words);
+					spellOutThousandGroup(thisGroup, words);
 				}
 				doubleValue /= 1000;
 			}
