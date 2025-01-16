@@ -196,10 +196,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
 			BigDecimal bigValue = new BigDecimal(doubleValue);
 			for (int i = 0; i < 102; ++i) {
-				bigValue = bigValue.divideToIntegralValue(THOUSAND);
+				bigValue = bigValue.divide(THOUSAND);
 				/* Using compareTo instead of equals, as the latter is stricter: it compares the objects' fields
-				 * rather than their numerical value */
-				if (bigValue.compareTo(BigDecimal.ZERO) == 0) {
+				 * rather than their numerical value. Also, compare to (less than) one: this is equivalent to
+				 * the value having a zero integral part (as it is a prerequisite that it be positive) */
+				if (bigValue.compareTo(BigDecimal.ONE) < 0) {
 					break;
 				}
 				long thisGroup = bigValue.remainder(THOUSAND).longValue();
