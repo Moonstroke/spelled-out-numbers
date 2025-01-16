@@ -80,7 +80,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"quadragint",
 		"quinquagint",
 		"sexagint",
-		"septagint",
+		"septuagint",
 		"octogint",
 		"nonagint",
 	};
