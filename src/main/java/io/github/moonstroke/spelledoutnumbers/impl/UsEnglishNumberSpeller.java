@@ -196,18 +196,18 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
 			BigDecimal bigValue = new BigDecimal(doubleValue);
 			for (int i = 0; i < 102; ++i) {
+				bigValue = bigValue.divideToIntegralValue(THOUSAND);
 				/* Using compareTo instead of equals, as the latter is stricter: it compares the objects' fields
 				 * rather than their numerical value */
-				if (bigValue.divideToIntegralValue(THOUSAND).compareTo(BigDecimal.ZERO) == 0) {
+				if (bigValue.compareTo(BigDecimal.ZERO) == 0) {
 					break;
 				}
-				long thisGroup = bigValue.divide(THOUSAND).remainder(THOUSAND).longValue();
+				long thisGroup = bigValue.remainder(THOUSAND).longValue();
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
 					spellOutThousandGroup(thisGroup, words);
 				}
-				bigValue = bigValue.divide(THOUSAND);
 			}
 		}
 		for (int i = words.size() - 1; i > 0; --i) {
