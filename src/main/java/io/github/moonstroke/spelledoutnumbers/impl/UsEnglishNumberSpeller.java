@@ -1,5 +1,6 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.math.BigDecimal;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -190,19 +191,23 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutAsLong((long) doubleValue, words);
 		} else {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
+			BigDecimal bigValue = new BigDecimal(doubleValue);
 			for (int i = 0; i < 102; ++i) {
-				if ((int) doubleValue / 1000 == 0) {
+				/* Using compareTo instead of equals, as the latter is stricter: it compares the objects' fields
+				 * rather than their numerical value */
+				if (bigValue.divideToIntegralValue(BigDecimal.valueOf(1000)).compareTo(BigDecimal.ZERO) == 0) {
 					break;
 				}
 				/* Clip the current thousands group on both sides to avoid inaccurate rounding
 				 * in big numbers */
-				long thisGroup = (long) (doubleValue % 1e6) / 1000;
+				long thisGroup = bigValue.remainder(BigDecimal.valueOf(1_000_000)).divide(BigDecimal.valueOf(1000))
+				                         .longValue();
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
 					spellOutThousandGroup(thisGroup, words);
 				}
-				doubleValue /= 1000;
+				bigValue = bigValue.divide(BigDecimal.valueOf(1000));
 			}
 		}
 		for (int i = words.size() - 1; i > 0; --i) {
