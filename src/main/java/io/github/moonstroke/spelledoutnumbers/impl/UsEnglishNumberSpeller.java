@@ -181,6 +181,9 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
+	private static final BigDecimal THOUSAND = BigDecimal.valueOf(1000);
+
+
 	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		List<String> words = new ArrayList<>();
@@ -195,19 +198,16 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			for (int i = 0; i < 102; ++i) {
 				/* Using compareTo instead of equals, as the latter is stricter: it compares the objects' fields
 				 * rather than their numerical value */
-				if (bigValue.divideToIntegralValue(BigDecimal.valueOf(1000)).compareTo(BigDecimal.ZERO) == 0) {
+				if (bigValue.divideToIntegralValue(THOUSAND).compareTo(BigDecimal.ZERO) == 0) {
 					break;
 				}
-				/* Clip the current thousands group on both sides to avoid inaccurate rounding
-				 * in big numbers */
-				long thisGroup = bigValue.remainder(BigDecimal.valueOf(1_000_000)).divide(BigDecimal.valueOf(1000))
-				                         .longValue();
+				long thisGroup = bigValue.divide(THOUSAND).remainder(THOUSAND).longValue();
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
 					spellOutThousandGroup(thisGroup, words);
 				}
-				bigValue = bigValue.divide(BigDecimal.valueOf(1000));
+				bigValue = bigValue.divide(THOUSAND);
 			}
 		}
 		for (int i = words.size() - 1; i > 0; --i) {
