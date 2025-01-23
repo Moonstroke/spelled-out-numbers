@@ -41,8 +41,10 @@ public class SpelledOutNumber extends Number {
 	 *
 	 * @param locale        The local in which the number is transcribed
 	 * @param transcription The textual transcription of the number
+	 *
+	 * @throws NumberFormatException if the transcription does not represent a valid number
 	 */
-	public SpelledOutNumber(Locale locale, String transcription) {
+	public SpelledOutNumber(Locale locale, String transcription) throws NumberFormatException {
 		this(locale, parse(locale, transcription), transcription);
 	}
 
