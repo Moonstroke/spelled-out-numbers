@@ -23,8 +23,13 @@ public class SpelledOutNumber extends Number {
 	 */
 	public SpelledOutNumber(Locale locale, double doubleValue) {
 		this.locale = locale;
-		this.transcription = null; // TODO
+		this.transcription = spellOut(locale, doubleValue);
 		this.doubleValue = doubleValue;
+	}
+
+	/* Compute the transcription of the given value */
+	private static String spellOut(Locale locale, double doubleValue) {
+		return null; // TODO
 	}
 
 	/**
@@ -36,7 +41,12 @@ public class SpelledOutNumber extends Number {
 	public SpelledOutNumber(Locale locale, String transcription) {
 		this.locale = locale;
 		this.transcription = transcription;
-		this.doubleValue = Double.NaN; // TODO
+		this.doubleValue = parse(locale, transcription);
+	}
+
+	/* Compute the numeric value represented by the given text */
+	private static double parse(Locale locale, String transcription) {
+		return Double.NaN; // TODO
 	}
 
 	/**
