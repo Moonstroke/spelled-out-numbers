@@ -17,6 +17,18 @@ public class DefaultNumericTextParser implements NumericTextParser {
 
 	@Override
 	public double parse(String text) throws NumberFormatException {
+		if (text.equals("not a number")) {
+			return Double.NaN;
+		}
+		if (text.startsWith("minus ")) {
+			return -parse(text.substring("minus ".length()));
+		}
+		if (text.equals("infinity")) {
+			return Double.POSITIVE_INFINITY;
+		}
+		if (text.equals("zero")) {
+			return 0;
+		}
 		return Double.NaN; // TODO
 	}
 }

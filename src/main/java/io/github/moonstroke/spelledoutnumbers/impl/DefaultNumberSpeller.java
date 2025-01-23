@@ -17,6 +17,18 @@ public class DefaultNumberSpeller implements NumberSpeller {
 
 	@Override
 	public String spellOut(double doubleValue) throws NumberFormatException {
+		if (Double.isNaN(doubleValue)) {
+			return "not a number";
+		}
+		if (doubleValue < 0) {
+			return "minus " + spellOut(-doubleValue);
+		}
+		if (Double.isInfinite(doubleValue)) {
+			return "infinity";
+		}
+		if (doubleValue == 0) {
+			return "zero";
+		}
 		return ""; // TODO
 	}
 }
