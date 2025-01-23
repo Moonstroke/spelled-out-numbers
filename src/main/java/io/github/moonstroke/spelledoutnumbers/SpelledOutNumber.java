@@ -70,4 +70,15 @@ public class SpelledOutNumber extends Number {
 	public double doubleValue() {
 		return doubleValue;
 	}
+
+	/**
+	 * Construct a spelled-out number for the same numeric value in a different locale.
+	 *
+	 * @param otherLocale The other locale in which to transcribe this number
+	 *
+	 * @return a copy of this number, transcribed in a different locale
+	 */
+	public SpelledOutNumber toLocale(Locale otherLocale) {
+		return new SpelledOutNumber(otherLocale, doubleValue);
+	}
 }
