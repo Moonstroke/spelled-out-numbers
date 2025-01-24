@@ -1,6 +1,7 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -181,7 +182,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
-	private static final BigDecimal THOUSAND = BigDecimal.valueOf(1000);
+	private static final BigInteger THOUSAND = BigInteger.valueOf(1000);
 
 
 	/* Prerequisite: doubleValue >= 0 */
@@ -194,13 +195,12 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutAsLong((long) doubleValue, words);
 		} else {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
-			BigDecimal bigValue = new BigDecimal(doubleValue);
+			/* No risk of losing a fractional part, as above 2^63 only integral numbers are representable.
+			 * We still have to pass by a big decimal because there is no BigInteger constructor accepting a double */
+			BigInteger bigValue = new BigDecimal(doubleValue).toBigInteger();
 			for (int i = 0; i < 102; ++i) {
 				bigValue = bigValue.divide(THOUSAND);
-				/* Using compareTo instead of equals, as the latter is stricter: it compares the objects' fields
-				 * rather than their numerical value. Also, compare to (less than) one: this is equivalent to
-				 * the value having a zero integral part (as it is a prerequisite that it be positive) */
-				if (bigValue.compareTo(BigDecimal.ONE) < 0) {
+				if (bigValue.equals(BigInteger.ZERO)) {
 					break;
 				}
 				long thisGroup = bigValue.remainder(THOUSAND).longValue();
