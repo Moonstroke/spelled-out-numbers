@@ -1,0 +1,154 @@
+valeur numérique,transcription
+# Valeurs spéciales IEEE-754
+NaN,pas un nombre
+Infinity,infinité
+-Infinity,moins infinité
+# Valeurs numériques
+0.,zéro
+1.,un
+1.414213,un virgule quatre un quatre deux un trois
+2.,deux
+2.718281,deux virgule sept un huit deux huit un
+3.,trois
+3.1415926,trois virgule un quatre un cinq neuf deux six
+4.,quatre
+5.,cinq
+6.,six
+7.,sept
+8.,huit
+9.,neuf
+10.,dix
+11.,onze
+12.,douze
+13.,treize
+14.,quatorze
+15.,quinze
+16.,seize
+17.,dix-sept
+18.,dix-huit
+19.,dix-neuf
+20.,vingt
+21.,vingt et un
+22.,vingt-deux
+23.,vingt-trois
+24.,vingt-quatre
+25.,vingt-cinq
+26.,vingt-six
+27.,vingt-sept
+28.,vingt-huit
+29.,vingt-neuf
+30.,trente
+31.,trente et un
+32.,trente-deux
+33.,trente-trois
+34.,trente-quatre
+35.,trente-cinq
+36.,trente-six
+37.,trente-sept
+38.,trente-huit
+39.,trente-neuf
+40.,quarante
+41.,quarante et un
+42.,quarante-deux
+43.,quarante-trois
+44.,quarante-quatre
+45.,quarante-cinq
+46.,quarante-six
+47.,quarante-sept
+48.,quarante-huit
+49.,quarante-neuf
+50.,cinquante
+51.,cinquante et un
+52.,cinquante-deux
+53.,cinquante-trois
+54.,cinquante-quatre
+55.,cinquante-cinq
+56.,cinquante-six
+57.,cinquante-sept
+58.,cinquante-huit
+59.,cinquante-neuf
+60.,soixante
+61.,soixante et un
+62.,soixante-deux
+63.,soixante-trois
+64.,soixante-quatre
+65.,soixante-cinq
+66.,soixante-six
+67.,soixante-sept
+68.,soixante-huit
+69.,soixante-neuf
+70.,soixante-dix
+71.,soixante et onze
+72.,soixante-douze
+73.,soixante-treize
+74.,soixante-quatorze
+75.,soixante-quinze
+76.,soixante-seize
+77.,soixante-dix-sept
+78.,soixante-dix-huit
+79.,soixante-dix-neuf
+80.,quatre-vingts
+81.,quatre-vingt-un
+82.,quatre-vingt-deux
+83.,quatre-vingt-trois
+84.,quatre-vingt-quatre
+85.,quatre-vingt-cinq
+86.,quatre-vingt-six
+87.,quatre-vingt-sept
+88.,quatre-vingt-huit
+89.,quatre-vingt-neuf
+90.,quatre-vingt-dix
+91.,quatre-vingt-onze
+92.,quatre-vingt-douze
+93.,quatre-vingt-treize
+94.,quatre-vingt-quatorze
+95.,quatre-vingt-quinze
+96.,quatre-vingt-seize
+97.,quatre-vingt-dix-sept
+98.,quatre-vingt-dix-huit
+99.,quatre-vingt-dix-neuf
+100.,cent
+111.,cent onze
+123.45,cent vingt-trois virgule quatre cinq
+200.,deux cents
+300.,trois cents
+321.,trois cent vingt et un
+1000.,mille
+1234.,mille deux cent trente-quatre
+10000.,dix mille
+54321.,cinquante-quatre mille trois cent vingt et un
+100000.,cent mille
+1000000.,un million
+10000000.,dix millions
+100000000.,cent millions
+1000000000.,un milliard
+1000000000000.,un billion
+1000000000000000.,un billiard
+# Plus grand nombre non-entier représentable par un double IEEE-754
+4503599627370495.5,quatre billiards cinq cent trois billions cinq cent quatre-vingt-dix-neuf milliards six cent vingt-sept millions trois cent soixante-dix mille quatre cent quatre-vingt-quinze virgule cinq
+1000000000000000000.,un trillion
+# Plus grande valeur IEEE-754 inférieure à Long.MAX_VALUE
+9223372036854774784.,neuf trillions deux cent vingt-trois billiards trois cent soixante-douze billions trente-six milliards huit cent cinquante-quatre millions sept cent soixante-quatorze mille sept cent quatre-vingt-quatre
+# 2^63 = Long.MAX_VALUE + 1 (plus petite valeur non représentable par un entier long)
+9223372036854775808.,neuf trillions deux cent vingt-trois billiards trois cent soixante-douze billions trente-six milliards huit cent cinquante-quatre millions sept cent soixante-quinze mille huit cent huit
+1000000000000000000000.,un trilliard
+# Un quadrillion et les puissances de mille supérieures ne sont pas représentables exactement par des doubles IEEE-754 ; les nombres suivants sont les plus petits nombres représentables supérieurs à chaque rang de milliers
+1000000000000000117440512.,un quadrillion cent dix-sept millions quatre cent quarante mille cinq cent douze
+1000000000000000013287555072.,un quadrilliard treize milliards deux cent quatre-vingt-sept millions cinq cent cinquante-cinq mille soixante-douze
+1000000000000000019884624838656.,un quintillion dix-neuf billions huit cent quatre-vingt-quatre milliards six cent vingt-quatre millions huit cent trente-huit mille six cent cinquante-six
+1000000000000000089690419062898688.,un quintilliard quatre-vingt-neuf billiards six cent quatre-vingt-dix billions quatre cent dix-neuf milliards soixante-deux millions huit cent quatre-vingt-dix-huit mille six cent quatre-vingt-huit
+1000000000000000042420637374017961984.,un sextillion quarante-deux trillions quatre cent vingt billiards six cent trente-sept billions trois cent soixante-quatorze milliards dix-sept millions neuf cent soixante et mille neuf cent quatre-vingt-quatre
+1000000000000000090824893823431825424384.,un sextilliard quatre-vingt-dix trilliards huit cent vingt-quatre trillions huit cent quatre-vingt-treize billiards huit cent vingt-trois billions quatre cent trente et un milliards huit cent vingt-cinq millions quatre cent vingt-quatre mille trois cent quatre-vingt-quatre
+1000000000000000044885712678075916785549312.,un septillion quarante-quatre quadrillions huit cent quatre-vingt-cinq trilliards sept cent douze trillions six cent soixante-dix-huit billiards soixante-quinze billions neuf cent seize milliards sept cent quatre-vingt-cinq millions cinq cent quarante-neuf mille trois cent douze
+1000000000000000088213614053064226407018659840.,un septilliard quatre-vingt-huit quadrilliards deux cent treize quadrillions six cent quatorze trilliards cinquante-trois trillions soixante-quatre billiards deux cent vingt-six billions quatre cent sept milliards dix-huit millions six cent cinquante-neuf mille huit cent quarante
+1000000000000000043845843045076197354634047651840.,un octillion quarante-trois quintillions huit cent quarante-cinq quadrilliards huit cent quarante-trois quadrillions quarante-cinq trilliards soixante-seize trillions cent quatre-vingt-dix-sept billiards trois cent cinquante-quatre billions six cent trente-quatre milliards quarante-sept millions six cent cinquante et mille huit cent quarante
+1000000000000000159374448147476112089437590976987136.,un octilliard cent cinquante-neuf quintilliards trois cent soixante-quatorze quintillions quatre cent quarante-huit quadrilliards cent quarante-sept quadrillions quatre cent soixante-seize trilliards cent douze trillion quatre-vingt-neuf billiards quatre cent trente-sept billions cinq cent quatre-vingt-dix milliards neuf cent soixante-seize millions neuf cent quatre-vingt-sept mille cent trente-six
+1000000000000000078291540404596243842305360299886116864.,un nonillion soixante-dix-huit sextillions deux cent quatre-vingt-onze quintilliards cinq cent quarante quintillions quatre cent quatre quadrilliards cinq cent quatre-vingt-seize quadrillions deux cent quarante-trois trilliards huit cent quarante-deux trillions trois cent cinq billiards trois cent soixante billions deux cent quatre-vingt-dix-neuf milliards huit cent quatre-vingt-six millions cent seize mille huit cent soixante-quatre
+1000000000000000048346692115553659057528394845890514255872.,un nonilliard quarante-huit sextilliards trois cent quarante-six sextillions six cent quatre-vingt-douze quintilliards cent quinze quintillions cinq cent cinquante-trois quadrilliards six cent cinquante-neuf quadrillions cinquante-sept trilliards cinq cent vingt-huit trillions trois cent quatre-vingt-quatorze billiards huit cent quarante-cinq billions huit cent quatre-vingt-dix milliards cinq cent quatorze millions deux cent cinquante-cinq mille huit cent soixante-douze
+1000000000000000127793096885319003999249391192200302120927232.,un décillion cent vingt-sept septillions sept cent quatre-vingt-treize sextilliards quatre-vingt-seize sextillions huit cent quatre-vingt-cinq quintilliards trois cent dix-neuf quintillions trois quadrilliards neuf cent quatre-vingt-dix-neuf quadrillions deux cent quarante-neuf trilliards trois cent quatre-vingt-onze trillions cent quatre-vingt-douze billiards deux cent billions trois cent deux milliards cent vingt millions neuf cent vingt-sept mille deux cent trente-deux
+1000000000000000057857959942726969827393378689175040438172647424.,un décilliard cinquante-sept septilliards huit cent cinquante-sept septillions neuf cent cinquante-neuf sextilliards neuf cent quarante-deux sextillions sept cent vingt-six quintilliards neuf cent soixante-neuf quintillions huit cent vingt-sept quadrilliards trois cent quatre-vingt-treize quadrillions trois cent soixante-dix-huit trilliards six cent quatre-vingt-neuf trillions cent soixante-quinze billiards quarante billions quatre cent trente-huit milliards cent soixante-douze millions six cent quarante-sept mille quatre cent vingt-quatre
+1000000000000000132394543446603018655781305157705474440625207115776.,un undécillion cent trente-deux octillions trois cent quatre-vingt-quatorze septilliards cinq cent quarante-trois septillions quatre cent quarante-six sextilliards six cent trois sextillions dix-huit quintilliards six cent cinquante-cinq quintillions sept cent quatre-vingt-un quadrilliards trois cent cinq quadrillions cent cinquante-sept trilliards sept cent cinq trillions quatre cent soixante-quatorze billiards quatre cent quarante billions six cent vingt-cinq milliards deux cent sept millions cent quinze mille sept cent soixante-seize
+# Un gogol (10^100)
+10000000000000000159028911097599180468360808563945281389781327557747838772170381060813469985856815104,dix sédécilliards cent cinquante-neuf trédécilliards vingt-huit trédécillions neuf cent onze duodécilliards quatre-vingt-dix-sept duodécillions cinq cent quatre-vingt-dix-neuf undécilliards cent quatre-vingt undécillions quatre cent soixante-huit décilliards trois cent soixante décillions huit cent huit nonilliards cinq cent soixante-trois nonillions neuf cent quarante-cinq octilliards deux cent quatre-vingt-un octillions trois cent quatre-vingt-neuf septilliards sept cent quatre-vingt-un septillions trois cent vingt-sept sextilliards cinq cent cinquante-sept sextillions sept cent quarante-sept quintilliards huit cent trente-huit quintillions sept cent soixante-douze quadrilliards cent soixante-dix quadrillions trois cent quatre-vingt-un trilliards soixante trillions huit cent treize billiards quatre cent soixante-neuf billions neuf cent quatre-vingt-cinq milliards huit cent cinquante-six millions huit cent quinze mille cent quatre
+# La plus grande valeur représentable par un double IEEE-754 (Double.MAX_VALUE)
+179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368,cent soixante-dix-neuf unquinquagintillions sept cent soixante-neuf quinquagintilliards trois cent treize quinquagintillions quatre cent quatre-vingt-six nonvenquadragintilliards deux cent trente et un novenquadragintillions cinq cent soixante-dix octoquadragintilliards huit cent quatorze octoquadragintillions cinq cent vingt-sept septenquadragintilliards quatre cent vingt-trois septenquadragintillions sept cent trente et un sesquadragintilliards sept cent quatre sesquadragintilliards trois cent cinquante-six quindragintilliards sept cent quatre-vingt-dix-huit quindragintillions soixante-dix quattuorquadragintilliards cinq cent soixante-sept quattuorquadragintillions cinq cent vingt-cinq tresquadragintilliards huit cent quarante-quatre tresquadragintillions neuf cent quatre-vingt-seize duoquadragintilliards cinq cent quatre-vingt-dix-huit duoquadragintillions neuf cent dix-sept unquadragintilliards quatre cent soixante-seize unquadragintillions huit cent trois quadragintilliards cent cinquante-sept quadragintillions deux cent soixante noventrigintilliards sept cent quatre-vingt noventrigintillions vingt-huit octotrigintilliards cinq cent trente-huit octotrigintillions sept cent soixante septentrigintilliards cinq cent quatre-vingt-neuf septentrigintillions cinq cent cinquante-huit sestrigintilliards six cent trente-deux sestrigintillions sept cent soixante-six quintrigintilliards huit cent soixante-dix-huit quintrigintillions cent soixante et onze quattuortrigintilliards cinq cent quarante quattuortrigintillions quatre cent cinquante-huit trestrigintilliards neuf cent cinquante-trois trestrigintillions cinq cent quatorze duotrigintilliards trois cent quatre-vingt-deux duotrigintillions quatre cent soixante-quatre untrigintilliards deux cent trente-quatre untrigintillions trois cent vingt et un trigintilliards trois cent vingt-six trigintillions huit cent quatre-vingt-neuf novemvigintilliards quatre cent soixante-quatre novemvigintillions cent quatre-vingt-deux octovigintilliards sept cent soixante-huit octovigintillions quatre cent soixante-sept septemvigintilliards cinq cent quarante-six septemvigintillions sept cent trois sesvigintilliards cinq cent trente-sept sesvigintillions cinq cent seize quinvigintilliards neuf cent quatre-vingt-six quinvigintillions quarante-neuf quattuorvigintilliards neuf cent dix quattuorvigintillions cinq cent soixante-seize tresvigintilliards cinq cent cinquante et un tresvigintillions deux cent quatre-vingt-deux quovigintilliards soixante-seize duovigintillions deux cent quarante-cinq unvigintilliards quatre cent quatre-vingt-dix unvigintillions quatre-vingt-dix vigintilliards trois cent quatre-vingt-neuf vigintillions trois cent vingt-huit novendécilliards neuf cent quarante-quatre novendécillions soixante-quinze octodécilliards huit cent soixante-huit octodécillions cinq cent huit septendécilliards quatre cent cinquante-cinq septendécillions cent trente-trois sédécilliards neuf cent quarante-deux sédécillions trois cent quatre quindécilliards cinq cent quatre-vingt-trois quindécillions deux cent trente-six quattuordécilliards neuf cent trois quattuordécillions deux cent vingt-deux trédécilliards neuf cent quarante-huit trédécillions cent soixante-cinq duodécilliards huit cent huit duodécillions cinq cent cinquante-neuf undécilliards trois cent trente-deux undécillions cent vingt-trois décilliards trois cent quarante-huit décillions deux cent soixante-quatorze nonilliards sept cent quatre-vingt-dix-sept nonillions huit cent vingt-six octilliards deux cent quatre octillions cent quarante-quatre septilliards sept cent vingt-trois septillions cent soixante-huit sextilliards sept cent trente-huit sextillions cent soixante-dix-sept quintilliards cent quatre-vingt quintillions neuf cent dix-neuf quadrilliards deux cent quatre-vingt-dix-neuf quadrillions huit cent quatre-vingt-un trilliards deux cent cinquante trillions quatre cent quatre billiards vingt-six billions cent quatre-vingt-quatre milliards cent vingt-quatre millions huit cent cinquante-huit mille trois cent soixante-huit
