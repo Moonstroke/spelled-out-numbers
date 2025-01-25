@@ -111,17 +111,29 @@ Infinity,infinité
 111.,cent onze
 123.45,cent vingt-trois virgule quatre cinq
 200.,deux cents
+201.,deux cent un
 300.,trois cents
+301.,trois cent un
 321.,trois cent vingt et un
 1000.,mille
 1234.,mille deux cent trente-quatre
 10000.,dix mille
 54321.,cinquante-quatre mille trois cent vingt et un
 100000.,cent mille
+200000.,deux cent mille
 1000000.,un million
+2000000.,deux millions
 10000000.,dix millions
+80000000.,quatre-vingts millions
+80080000.,quatre-vingts millions quatre-vingt mille
+81000300.,quatre-vingt-un millions trois cents
 100000000.,cent millions
+300000000.,trois cents millions
+401000000.,quatre cent un millions
+580000000.,cinq cent quatre-vingts millions
 1000000000.,un milliard
+600000000000.,six cents milliards
+701000000000.,sept cent un milliards
 1000000000000.,un billion
 1000000000000000.,un billiard
 # Plus grand nombre non-entier représentable par un double IEEE-754
