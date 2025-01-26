@@ -269,6 +269,10 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		int exponent = Math.getExponent(doubleValue) - 52;
 		/* Clip mantissa bits and add back implicit leading unit bit */
 		long significand = (Double.doubleToLongBits(doubleValue) & 0xfffffffffffffL) + 0x10000000000000L;
+		int additionalPowersOfTwo = Long.numberOfTrailingZeros(significand);
+		/* Move powers of two from the significand to the exponent to minimize trhe former and maximize the latter */
+		exponent += additionalPowersOfTwo;
+		significand >>= additionalPowersOfTwo;
 		return BigInteger.valueOf(significand).multiply(BigInteger.TWO.pow(exponent));
 	}
 
