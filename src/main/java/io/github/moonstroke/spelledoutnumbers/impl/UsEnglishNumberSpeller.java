@@ -1,6 +1,5 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
@@ -264,10 +263,13 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	}
 
 	/* Prerequisite: Long.MAX_VALUE < doubleValue */
+	/* No risk of losing a fractional part: in this range, only integral numbers are representable */
 	private static BigInteger asBigInteger(double doubleValue) {
-		/* No risk of losing a fractional part, as above 2^63 only integral numbers are representable.
-		 * We still have to pass by a big decimal because there is no BigInteger constructor accepting a double */
-		return new BigDecimal(doubleValue).toBigInteger();
+		/* Subtract the significand width so that 1 <= significand < 2 */
+		int exponent = Math.getExponent(doubleValue) - 52;
+		/* Clip mantissa bits and add back implicit leading unit bit */
+		long significand = (Double.doubleToLongBits(doubleValue) & 0xfffffffffffffL) + 0x10000000000000L;
+		return BigInteger.valueOf(significand).multiply(BigInteger.TWO.pow(exponent));
 	}
 
 
