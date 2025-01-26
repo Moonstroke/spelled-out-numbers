@@ -273,7 +273,13 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		/* Move powers of two from the significand to the exponent to minimize trhe former and maximize the latter */
 		exponent += additionalPowersOfTwo;
 		significand >>= additionalPowersOfTwo;
-		return BigInteger.valueOf(significand).multiply(BigInteger.TWO.pow(exponent));
+		BigInteger bigExponent;
+		if (exponent < 63) {
+			bigExponent = BigInteger.valueOf(1 << exponent);
+		} else {
+			bigExponent = BigInteger.TWO.pow(exponent);
+		}
+		return BigInteger.valueOf(significand).multiply(bigExponent);
 	}
 
 
