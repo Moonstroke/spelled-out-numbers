@@ -195,9 +195,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutAsLong((long) doubleValue, words);
 		} else {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
-			/* No risk of losing a fractional part, as above 2^63 only integral numbers are representable.
-			 * We still have to pass by a big decimal because there is no BigInteger constructor accepting a double */
-			BigInteger bigValue = new BigDecimal(doubleValue).toBigInteger();
+			BigInteger bigValue = asBigInteger(doubleValue);
 			for (int i = 0; i < 102; ++i) {
 				bigValue = bigValue.divide(THOUSAND);
 				if (bigValue.equals(BigInteger.ZERO)) {
@@ -263,6 +261,13 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	/* Prerequisite: 0 <= longValue <= 19 */
 	private static void spellOutDigit(long longValue, List<String> words) {
 		words.add(DIGITS_TEENS[(int) longValue]);
+	}
+
+	/* Prerequisite: Long.MAX_VALUE < doubleValue */
+	private static BigInteger asBigInteger(double doubleValue) {
+		/* No risk of losing a fractional part, as above 2^63 only integral numbers are representable.
+		 * We still have to pass by a big decimal because there is no BigInteger constructor accepting a double */
+		return new BigDecimal(doubleValue).toBigInteger();
 	}
 
 
