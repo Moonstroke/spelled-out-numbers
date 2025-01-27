@@ -51,6 +51,7 @@
 						</goals>
 						<configuration>
 							<pom>benchmarks/pom.xml</pom>
+							<postBuildHookScript>run-benchmarks</postBuildHookScript>
 						</configuration>
 					</execution>
 				</executions>
