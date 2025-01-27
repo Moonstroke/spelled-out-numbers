@@ -34,6 +34,9 @@
 				<version>3.9.0</version>
 				<configuration>
 					<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+					<!-- Append build log to the console and not in a separate file -->
+					<streamLogs>true</streamLogs>
+					<noLog>true</noLog>
 				</configuration>
 				<executions>
 					<execution>
