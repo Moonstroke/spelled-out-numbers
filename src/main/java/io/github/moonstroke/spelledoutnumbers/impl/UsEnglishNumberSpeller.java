@@ -275,7 +275,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		significand >>= additionalPowersOfTwo;
 		BigInteger bigExponent;
 		if (exponent < 63) {
-			bigExponent = BigInteger.valueOf(1 << exponent);
+			bigExponent = BigInteger.valueOf(1L << exponent);
 		} else {
 			bigExponent = BigInteger.TWO.pow(exponent);
 		}
