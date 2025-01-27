@@ -52,6 +52,10 @@
 						<configuration>
 							<pom>benchmarks/pom.xml</pom>
 							<postBuildHookScript>run-benchmarks</postBuildHookScript>
+							<scriptVariables>
+								<projectId>${project.artifactId}</projectId>
+								<projectVersion>${project.version}</projectVersion>
+							</scriptVariables>
 						</configuration>
 					</execution>
 				</executions>
