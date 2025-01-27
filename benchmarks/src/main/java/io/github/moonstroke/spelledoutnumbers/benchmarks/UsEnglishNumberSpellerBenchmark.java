@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
@@ -17,6 +18,7 @@ import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Thread)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Fork(1)
 public class UsEnglishNumberSpellerBenchmark {
 	final NumberSpeller speller = NumberSpeller.getNumberSpellerFor(Locale.US);
 
