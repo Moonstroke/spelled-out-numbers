@@ -1,1 +1,1 @@
-exec("java -jar benchmarks/target/spelled-out-numbers-benchmarks-0.0.1-SNAPSHOT.jar");
+exec("java -jar benchmarks/target/" + projectId + "-benchmarks-" + projectVersion + ".jar");
