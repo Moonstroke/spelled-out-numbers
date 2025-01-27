@@ -11,6 +11,10 @@ import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import io.github.moonstroke.spelledoutnumbers.NumberSpeller;
 
@@ -36,5 +40,13 @@ public class UsEnglishNumberSpellerBenchmark {
 	@Benchmark
 	public void benchmarkDoubleMaxValue(Blackhole bh) {
 		bh.consume(speller.spellOut(Double.MAX_VALUE));
+	}
+
+
+	public static void main(String[] args) throws RunnerException {
+		Options opts = new OptionsBuilder()
+				.include(UsEnglishNumberSpellerBenchmark.class.getSimpleName())
+				.build();
+		new Runner(opts).run();
 	}
 }
