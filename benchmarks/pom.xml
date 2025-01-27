@@ -2,15 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.github.moonstroke</groupId>
-	<artifactId>spelled-out-numbers-benchmarks</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Spelled-out numbers - benchmarks</name>
+	<groupId>@project.groupId@</groupId>
+	<artifactId>@project.artifactId@-benchmarks</artifactId>
+	<version>@project.version@</version>
+	<name>@project.name@ - benchmarks</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jmh.version>1.37</jmh.version>
-		<maven.compiler.release>11</maven.compiler.release>
+		<maven.compiler.release>@maven.compiler.release@</maven.compiler.release>
 	</properties>
 
 	<dependencies>
@@ -26,9 +26,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.moonstroke</groupId>
-			<artifactId>spelled-out-numbers</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>@project.groupId@</groupId>
+			<artifactId>@project.artifactId@</artifactId>
+			<version>@project.version@</version>
 		</dependency>
 	</dependencies>
 
