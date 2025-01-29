@@ -112,19 +112,39 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		String rankName = "";
 		if (rankIndexUnit != 0) {
 			rankName = ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1];
-			if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
-				rankName += "s";
-			} else if (rankIndexUnit == 6) {
-				if (2 <= rankIndexTen && rankIndexTen <= 5) {
+			if (rankIndexTen == 0) {
+				/* rankIndexHundred is necessarily nonzero */
+				if (rankIndexUnit == 3 && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5
+				                           || rankIndexHundred == 8)) {
 					rankName += "s";
-				} else if (rankIndexTen == 8) {
-					rankName += "x";
+				} else if (rankIndexUnit == 6) {
+					if (rankIndexHundred == 1 || rankIndexHundred == 8) {
+						rankName += "x";
+					} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
+						rankName += "s";
+					}
+				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+					if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
+						rankName += "n";
+					} else if (rankIndexHundred == 8) {
+						rankName += "m";
+					}
 				}
-			} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-				if (rankIndexTen == 2 || rankIndexTen == 8) {
-					rankName += "m";
-				} else if (rankIndexTen != 9) {
-					rankName += "n";
+			} else {
+				if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
+					rankName += "s";
+				} else if (rankIndexUnit == 6) {
+					if (2 <= rankIndexTen && rankIndexTen <= 5) {
+						rankName += "s";
+					} else if (rankIndexTen == 8) {
+						rankName += "x";
+					}
+				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+					if (rankIndexTen == 2 || rankIndexTen == 8) {
+						rankName += "m";
+					} else if (rankIndexTen != 9) {
+						rankName += "n";
+					}
 				}
 			}
 		}
