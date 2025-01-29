@@ -103,65 +103,67 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (rankIndex == 0) {
 			return "thousand";
 		}
+		StringBuilder rankNameBuilder = new StringBuilder();
 		if (rankIndex <= 10) {
-			return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
+			rankNameBuilder.append(THOUSANDS_SCALE_PREFIXES[rankIndex - 1]);
+		} else {
+    		int rankIndexUnit = rankIndex % 10;
+    		int rankIndexTen = (rankIndex / 10) % 10;
+    		int rankIndexHundred = rankIndex / 100;
+    		if (rankIndexUnit != 0) {
+    			rankNameBuilder.append(ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1]);
+    			if (rankIndexTen == 0) {
+    				/* rankIndexHundred is necessarily nonzero */
+    				if (rankIndexUnit == 3 && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5
+    				                           || rankIndexHundred == 8)) {
+    					rankNameBuilder.append('s');
+    				} else if (rankIndexUnit == 6) {
+    					if (rankIndexHundred == 1 || rankIndexHundred == 8) {
+    						rankNameBuilder.append('x');
+    					} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
+    						rankNameBuilder.append('s');
+    					}
+    				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+    					if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
+    						rankNameBuilder.append('n');
+    					} else if (rankIndexHundred == 8) {
+    						rankNameBuilder.append('m');
+    					}
+    				}
+    			} else {
+    				if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
+    					rankNameBuilder.append('s');
+    				} else if (rankIndexUnit == 6) {
+    					if (2 <= rankIndexTen && rankIndexTen <= 5) {
+    						rankNameBuilder.append('s');
+    					} else if (rankIndexTen == 8) {
+    						rankNameBuilder.append('x');
+    					}
+    				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+    					if (rankIndexTen == 2 || rankIndexTen == 8) {
+    						rankNameBuilder.append('m');
+    					} else if (rankIndexTen != 9) {
+    						rankNameBuilder.append('n');
+    					}
+    				}
+    			}
+    		}
+    		if (rankIndexTen != 0) {
+    			rankNameBuilder.append(ZILLIONS_TENS_PREFIXES[rankIndexTen - 1]);
+    			if (rankIndexHundred != 0) {
+    				if (rankIndexTen == 1 || rankIndexTen == 2) {
+    					rankNameBuilder.append('i');
+    				} else {
+    					rankNameBuilder.append('a');
+    				}
+    			}
+    		}
+    		if (rankIndexHundred != 0) {
+    			rankNameBuilder.append(ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1]);
+    		}
 		}
-		int rankIndexUnit = rankIndex % 10;
-		int rankIndexTen = (rankIndex / 10) % 10;
-		int rankIndexHundred = rankIndex / 100;
-		String rankName = "";
-		if (rankIndexUnit != 0) {
-			rankName = ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1];
-			if (rankIndexTen == 0) {
-				/* rankIndexHundred is necessarily nonzero */
-				if (rankIndexUnit == 3 && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5
-				                           || rankIndexHundred == 8)) {
-					rankName += "s";
-				} else if (rankIndexUnit == 6) {
-					if (rankIndexHundred == 1 || rankIndexHundred == 8) {
-						rankName += "x";
-					} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
-						rankName += "s";
-					}
-				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-					if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
-						rankName += "n";
-					} else if (rankIndexHundred == 8) {
-						rankName += "m";
-					}
-				}
-			} else {
-				if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
-					rankName += "s";
-				} else if (rankIndexUnit == 6) {
-					if (2 <= rankIndexTen && rankIndexTen <= 5) {
-						rankName += "s";
-					} else if (rankIndexTen == 8) {
-						rankName += "x";
-					}
-				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-					if (rankIndexTen == 2 || rankIndexTen == 8) {
-						rankName += "m";
-					} else if (rankIndexTen != 9) {
-						rankName += "n";
-					}
-				}
-			}
-		}
-		if (rankIndexTen != 0) {
-			rankName += ZILLIONS_TENS_PREFIXES[rankIndexTen - 1];
-			if (rankIndexHundred != 0) {
-				if (rankIndexTen == 1 || rankIndexTen == 2) {
-					rankName += "i";
-				} else {
-					rankName += "a";
-				}
-			}
-		}
-		if (rankIndexHundred != 0) {
-			rankName += ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1];
-		}
-		return rankName + "illion";
+		rankNameBuilder.append("illion");
+		return rankNameBuilder.toString();
 	}
 
 
