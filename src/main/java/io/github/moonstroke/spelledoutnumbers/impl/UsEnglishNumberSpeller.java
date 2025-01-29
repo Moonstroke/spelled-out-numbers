@@ -114,49 +114,14 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
     			rankNameBuilder.append(ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1]);
     			if (rankIndexTen == 0) {
     				/* rankIndexHundred is necessarily nonzero */
-    				if (rankIndexUnit == 3 && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5
-    				                           || rankIndexHundred == 8)) {
-    					rankNameBuilder.append('s');
-    				} else if (rankIndexUnit == 6) {
-    					if (rankIndexHundred == 1 || rankIndexHundred == 8) {
-    						rankNameBuilder.append('x');
-    					} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
-    						rankNameBuilder.append('s');
-    					}
-    				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-    					if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
-    						rankNameBuilder.append('n');
-    					} else if (rankIndexHundred == 8) {
-    						rankNameBuilder.append('m');
-    					}
-    				}
+    				addUnitHundredInsterstitalLetter(rankNameBuilder, rankIndexUnit, rankIndexHundred);
     			} else {
-    				if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
-    					rankNameBuilder.append('s');
-    				} else if (rankIndexUnit == 6) {
-    					if (2 <= rankIndexTen && rankIndexTen <= 5) {
-    						rankNameBuilder.append('s');
-    					} else if (rankIndexTen == 8) {
-    						rankNameBuilder.append('x');
-    					}
-    				} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-    					if (rankIndexTen == 2 || rankIndexTen == 8) {
-    						rankNameBuilder.append('m');
-    					} else if (rankIndexTen != 9) {
-    						rankNameBuilder.append('n');
-    					}
-    				}
+    				addUnitTenInterstitialLetter(rankNameBuilder, rankIndexUnit, rankIndexTen);
     			}
     		}
     		if (rankIndexTen != 0) {
     			rankNameBuilder.append(ZILLIONS_TENS_PREFIXES[rankIndexTen - 1]);
-    			if (rankIndexHundred != 0) {
-    				if (rankIndexTen == 1 || rankIndexTen == 2) {
-    					rankNameBuilder.append('i');
-    				} else {
-    					rankNameBuilder.append('a');
-    				}
-    			}
+    			addTenHundredInterstitialLetter(rankNameBuilder, rankIndexTen, rankIndexHundred);
     		}
     		if (rankIndexHundred != 0) {
     			rankNameBuilder.append(ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1]);
@@ -164,6 +129,59 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		}
 		rankNameBuilder.append("illion");
 		return rankNameBuilder.toString();
+	}
+
+	/* Prerequisite: 1 <= rankIndexUnit, rankIndexTen <= 10 */
+	private static void addUnitTenInterstitialLetter(StringBuilder rankNameBuilder, int rankIndexUnit,
+	                                                 int rankIndexTen) {
+		if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
+			rankNameBuilder.append('s');
+		} else if (rankIndexUnit == 6) {
+			if (2 <= rankIndexTen && rankIndexTen <= 5) {
+				rankNameBuilder.append('s');
+			} else if (rankIndexTen == 8) {
+				rankNameBuilder.append('x');
+			}
+		} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+			if (rankIndexTen == 2 || rankIndexTen == 8) {
+				rankNameBuilder.append('m');
+			} else if (rankIndexTen != 9) {
+				rankNameBuilder.append('n');
+			}
+		}
+	}
+
+	/* Prerequisite: 1 <= rankIndexUnit, rankIndexHundred <= 10 */
+	private static void addUnitHundredInsterstitalLetter(StringBuilder rankNameBuilder, int rankIndexUnit,
+	                                                     int rankIndexHundred) {
+		if (rankIndexUnit == 3
+		    && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5 || rankIndexHundred == 8)) {
+			rankNameBuilder.append('s');
+		} else if (rankIndexUnit == 6) {
+			if (rankIndexHundred == 1 || rankIndexHundred == 8) {
+				rankNameBuilder.append('x');
+			} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
+				rankNameBuilder.append('s');
+			}
+		} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+			if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
+				rankNameBuilder.append('n');
+			} else if (rankIndexHundred == 8) {
+				rankNameBuilder.append('m');
+			}
+		}
+	}
+
+	/* Prerequisite: 1 <= rankIndexTen <= 10, 0 <= rankIndexHundred <= 10 */
+	private static void addTenHundredInterstitialLetter(StringBuilder rankNameBuilder, int rankIndexTen,
+	                                                    int rankIndexHundred) {
+		if (rankIndexHundred != 0) {
+			if (rankIndexTen == 1 || rankIndexTen == 2) {
+				rankNameBuilder.append('i');
+			} else {
+				rankNameBuilder.append('a');
+			}
+		}
 	}
 
 
