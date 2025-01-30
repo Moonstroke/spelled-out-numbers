@@ -29,7 +29,7 @@ class UsEnglishNumericTextParserTest {
 	}
 
 	@ParameterizedTest
-	@CsvFileSource(resources = {"/numbers.csv"}, numLinesToSkip = 1)
+	@CsvFileSource(resources = {"/numbers.csv"}, numLinesToSkip = 1, maxCharsPerColumn = 4200)
 	void testParserParsesValidValues(double expected, String input) {
 		assertEquals(expected, parser.parse(input));
 	}
