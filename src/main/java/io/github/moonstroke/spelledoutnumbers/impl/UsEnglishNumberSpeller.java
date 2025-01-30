@@ -28,13 +28,8 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		"ten",
 		"eleven",
 		"twelve",
-		"thirteen",
+		null, /* Not used: thirteen can be constructed using TENS_PREFIXES */
 		"fourteen",
-		"fifteen",
-		"sixteen",
-		"seventeen",
-		"eighteen",
-		"nineteen"
 	};
 
 	private static final String[] TENS_PREFIXES = {
@@ -249,12 +244,14 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 				groupTranscription += "-" + DIGITS_TEENS[remainder];
 			}
 			words.add(groupTranscription);
+		} else if (longValue == 13 || longValue >= 15) {
+			words.add(TENS_PREFIXES[(int) longValue - 12] + "teen");
 		} else if (longValue > 0) {
 			spellOutDigit(longValue, words);
 		}
 	}
 
-	/* Prerequisite: 0 <= longValue <= 19 */
+	/* Prerequisite: 0 <= longValue <= 12 || longValue == 14 */
 	private static void spellOutDigit(long longValue, List<String> words) {
 		words.add(DIGITS_TEENS[(int) longValue]);
 	}
