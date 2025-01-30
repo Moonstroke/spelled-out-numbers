@@ -38,4 +38,10 @@ class UsEnglishNumericTextParserTest {
 	void testMinusZeroIsParsedAsMinusZero() {
 		assertEquals(-0., parser.parse("minus zero"));
 	}
+
+	@ParameterizedTest
+	@CsvFileSource(resources = {"/invalid-transcriptions.txt"})
+	void testParserFailsOnInvalidTranscriptions(String input) {
+		assertThrows(NumberFormatException.class, () -> parser.parse(input));
+	}
 }
