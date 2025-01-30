@@ -1,5 +1,6 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.math.BigInteger;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -97,45 +98,85 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		if (rankIndex == 0) {
 			return "thousand";
 		}
+		StringBuilder rankNameBuilder = new StringBuilder();
 		if (rankIndex <= 10) {
-			return THOUSANDS_SCALE_PREFIXES[rankIndex - 1] + "illion";
+			rankNameBuilder.append(THOUSANDS_SCALE_PREFIXES[rankIndex - 1]);
+		} else {
+    		int rankIndexUnit = rankIndex % 10;
+    		int rankIndexTen = (rankIndex / 10) % 10;
+    		int rankIndexHundred = rankIndex / 100;
+    		if (rankIndexUnit != 0) {
+    			rankNameBuilder.append(ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1]);
+    			if (rankIndexTen == 0) {
+    				/* rankIndexHundred is necessarily nonzero */
+    				addUnitHundredInsterstitalLetter(rankNameBuilder, rankIndexUnit, rankIndexHundred);
+    			} else {
+    				addUnitTenInterstitialLetter(rankNameBuilder, rankIndexUnit, rankIndexTen);
+    			}
+    		}
+    		if (rankIndexTen != 0) {
+    			rankNameBuilder.append(ZILLIONS_TENS_PREFIXES[rankIndexTen - 1]);
+    			addTenHundredInterstitialLetter(rankNameBuilder, rankIndexTen, rankIndexHundred);
+    		}
+    		if (rankIndexHundred != 0) {
+    			rankNameBuilder.append(ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1]);
+    		}
 		}
-		int rankIndexUnit = rankIndex % 10;
-		int rankIndexTen = (rankIndex / 10) % 10;
-		int rankIndexHundred = rankIndex / 100;
-		String rankName = "";
-		if (rankIndexUnit != 0) {
-			rankName = ZILLIONS_UNITS_PREFIXES[rankIndexUnit - 1];
-			if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
-				rankName += "s";
-			} else if (rankIndexUnit == 6) {
-				if (2 <= rankIndexTen && rankIndexTen <= 5) {
-					rankName += "s";
-				} else if (rankIndexTen == 8) {
-					rankName += "x";
-				}
-			} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
-				if (rankIndexTen == 2 || rankIndexTen == 8) {
-					rankName += "m";
-				} else if (rankIndexTen != 9) {
-					rankName += "n";
-				}
+		rankNameBuilder.append("illion");
+		return rankNameBuilder.toString();
+	}
+
+	/* Prerequisite: 1 <= rankIndexUnit, rankIndexTen <= 10 */
+	private static void addUnitTenInterstitialLetter(StringBuilder rankNameBuilder, int rankIndexUnit,
+	                                                 int rankIndexTen) {
+		if ((rankIndexUnit == 3 && (2 <= rankIndexTen && rankIndexTen <= 5 || rankIndexTen == 8))) {
+			rankNameBuilder.append('s');
+		} else if (rankIndexUnit == 6) {
+			if (2 <= rankIndexTen && rankIndexTen <= 5) {
+				rankNameBuilder.append('s');
+			} else if (rankIndexTen == 8) {
+				rankNameBuilder.append('x');
+			}
+		} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+			if (rankIndexTen == 2 || rankIndexTen == 8) {
+				rankNameBuilder.append('m');
+			} else if (rankIndexTen != 9) {
+				rankNameBuilder.append('n');
 			}
 		}
-		if (rankIndexTen != 0) {
-			rankName += ZILLIONS_TENS_PREFIXES[rankIndexTen - 1];
-			if (rankIndexHundred != 0) {
-				if (rankIndexTen == 1 || rankIndexTen == 2) {
-					rankName += "i";
-				} else {
-					rankName += "a";
-				}
+	}
+
+	/* Prerequisite: 1 <= rankIndexUnit, rankIndexHundred <= 10 */
+	private static void addUnitHundredInsterstitalLetter(StringBuilder rankNameBuilder, int rankIndexUnit,
+	                                                     int rankIndexHundred) {
+		if (rankIndexUnit == 3
+		    && (rankIndexHundred == 1 || 3 <= rankIndexHundred && rankIndexHundred <= 5 || rankIndexHundred == 8)) {
+			rankNameBuilder.append('s');
+		} else if (rankIndexUnit == 6) {
+			if (rankIndexHundred == 1 || rankIndexHundred == 8) {
+				rankNameBuilder.append('x');
+			} else if (3 <= rankIndexHundred && rankIndexHundred <= 5) {
+				rankNameBuilder.append('s');
+			}
+		} else if (rankIndexUnit == 7 || rankIndexUnit == 9) {
+			if (1 <= rankIndexHundred && rankIndexHundred <= 7) {
+				rankNameBuilder.append('n');
+			} else if (rankIndexHundred == 8) {
+				rankNameBuilder.append('m');
 			}
 		}
+	}
+
+	/* Prerequisite: 1 <= rankIndexTen <= 10, 0 <= rankIndexHundred <= 10 */
+	private static void addTenHundredInterstitialLetter(StringBuilder rankNameBuilder, int rankIndexTen,
+	                                                    int rankIndexHundred) {
 		if (rankIndexHundred != 0) {
-			rankName += ZILLIONS_HUNDREDS_PREFIXES[rankIndexHundred - 1];
+			if (rankIndexTen == 1 || rankIndexTen == 2) {
+				rankNameBuilder.append('i');
+			} else {
+				rankNameBuilder.append('a');
+			}
 		}
-		return rankName + "illion";
 	}
 
 
@@ -175,6 +216,9 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		return transcriber.toString();
 	}
 
+	private static final BigInteger THOUSAND = BigInteger.valueOf(1000);
+
+
 	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
 		List<String> words = new ArrayList<>();
@@ -185,19 +229,18 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 			spellOutAsLong((long) doubleValue, words);
 		} else {
 			spellOutThousandGroup((long) (doubleValue % 1000.), words);
+			BigInteger bigValue = asBigInteger(doubleValue);
 			for (int i = 0; i < 102; ++i) {
-				if ((int) doubleValue / 1000 == 0) {
+				bigValue = bigValue.divide(THOUSAND);
+				if (bigValue.equals(BigInteger.ZERO)) {
 					break;
 				}
-				/* Clip the current thousands group on both sides to avoid inaccurate rounding
-				 * in big numbers */
-				long thisGroup = (long) (doubleValue % 1e6) / 1000;
+				long thisGroup = bigValue.remainder(THOUSAND).longValue();
 				if (thisGroup > 0) {
 					String rankName = getThousandsRankName(i);
 					words.add(rankName);
 					spellOutThousandGroup(thisGroup, words);
 				}
-				doubleValue /= 1000;
 			}
 		}
 		for (int i = words.size() - 1; i > 0; --i) {
@@ -254,6 +297,26 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 	/* Prerequisite: 0 <= longValue <= 12 || longValue == 14 */
 	private static void spellOutDigit(long longValue, List<String> words) {
 		words.add(DIGITS_TEENS[(int) longValue]);
+	}
+
+	/* Prerequisite: Long.MAX_VALUE < doubleValue */
+	/* No risk of losing a fractional part: in this range, only integral numbers are representable */
+	private static BigInteger asBigInteger(double doubleValue) {
+		/* Subtract the significand width so that 1 <= significand < 2 */
+		int exponent = Math.getExponent(doubleValue) - 52;
+		/* Clip mantissa bits and add back implicit leading unit bit */
+		long significand = (Double.doubleToLongBits(doubleValue) & 0xfffffffffffffL) + 0x10000000000000L;
+		int additionalPowersOfTwo = Long.numberOfTrailingZeros(significand);
+		/* Move powers of two from the significand to the exponent to minimize trhe former and maximize the latter */
+		exponent += additionalPowersOfTwo;
+		significand >>= additionalPowersOfTwo;
+		BigInteger bigExponent;
+		if (exponent < 63) {
+			bigExponent = BigInteger.valueOf(1L << exponent);
+		} else {
+			bigExponent = BigInteger.TWO.pow(exponent);
+		}
+		return BigInteger.valueOf(significand).multiply(bigExponent);
 	}
 
 
