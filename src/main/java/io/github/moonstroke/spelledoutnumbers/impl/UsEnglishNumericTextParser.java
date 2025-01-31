@@ -77,36 +77,40 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		if (DIGITS.containsKey(text)) {
-			return DIGITS.get(text);
+		return processWord(text);
+	}
+
+	private static double processWord(String word) throws NumberFormatException {
+		if (DIGITS.containsKey(word)) {
+			return DIGITS.get(word);
 		}
-		if (LOW_NUMBERS.containsKey(text)) {
-			return LOW_NUMBERS.get(text);
+		if (LOW_NUMBERS.containsKey(word)) {
+			return LOW_NUMBERS.get(word);
 		}
-		if (text.endsWith("teen")) {
-			String prefix = text.substring(0, text.length() - "teen".length());
+		if (word.endsWith("teen")) {
+			String prefix = word.substring(0, word.length() - "teen".length());
 			if (!TEEN_PREFIXES.containsKey(prefix)) {
-				throw error(text);
+				throw error(word);
 			}
 			return 10. + TEEN_PREFIXES.get(prefix);
 		}
-		if (text.endsWith("ty")) {
-			String prefix = text.substring(0, text.length() - "ty".length());
+		if (word.endsWith("ty")) {
+			String prefix = word.substring(0, word.length() - "ty".length());
 			if (!TY_PREFIXES.containsKey(prefix)) {
-				throw error(text);
+				throw error(word);
 			}
 			return 10. * TY_PREFIXES.get(prefix);
 		}
-		int compositionIndex = text.indexOf("ty-");
+		int compositionIndex = word.indexOf("ty-");
 		if (compositionIndex > 0) {
-			String ten = text.substring(0, compositionIndex);
-			String unit = text.substring(compositionIndex + "ty-".length());
+			String ten = word.substring(0, compositionIndex);
+			String unit = word.substring(compositionIndex + "ty-".length());
 			if (!TY_PREFIXES.containsKey(ten) || !DIGITS.containsKey(unit)) {
-				throw error(text);
+				throw error(word);
 			}
 			return 10. * TY_PREFIXES.get(ten) + DIGITS.get(unit);
 		}
-		throw error(text);
+		throw error(word);
 	}
 
 	private static NumberFormatException error(String text) {
