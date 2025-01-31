@@ -18,26 +18,28 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 
-	private static final Map<String, Integer> DIGITS;
+	/* Atomic transcriptions (that cannot be deconstructed to fit other parts of the algorithm) */
+	private static final Map<String, Integer> LOW_NUMBERS;
+	/* Prefixes for -teen and -ty numbers that are the same for *both*: not 20, neither 14/40 */
 	private static final Map<String, Integer> PREFIXES;
 
 	static {
-		DIGITS = new HashMap<>();
-		DIGITS.put("one", 1);
-		DIGITS.put("two", 2);
-		DIGITS.put("three", 3);
-		DIGITS.put("four", 4);
-		DIGITS.put("five", 5);
-		DIGITS.put("six", 6);
-		DIGITS.put("seven", 7);
-		DIGITS.put("eight", 8);
-		DIGITS.put("nine", 9);
-		DIGITS.put("ten", 10);
-		DIGITS.put("eleven", 11);
-		DIGITS.put("twelve", 12);
-		DIGITS.put("fourteen", 14);
-		DIGITS.put("twenty", 20);
-		DIGITS.put("forty", 40);
+		LOW_NUMBERS = new HashMap<>();
+		LOW_NUMBERS.put("one", 1);
+		LOW_NUMBERS.put("two", 2);
+		LOW_NUMBERS.put("three", 3);
+		LOW_NUMBERS.put("four", 4);
+		LOW_NUMBERS.put("five", 5);
+		LOW_NUMBERS.put("six", 6);
+		LOW_NUMBERS.put("seven", 7);
+		LOW_NUMBERS.put("eight", 8);
+		LOW_NUMBERS.put("nine", 9);
+		LOW_NUMBERS.put("ten", 10);
+		LOW_NUMBERS.put("eleven", 11);
+		LOW_NUMBERS.put("twelve", 12);
+		LOW_NUMBERS.put("fourteen", 14);
+		LOW_NUMBERS.put("twenty", 20);
+		LOW_NUMBERS.put("forty", 40);
 
 		PREFIXES = new HashMap<>();
 		PREFIXES.put("thir", 3);
@@ -68,8 +70,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		if (DIGITS.containsKey(text)) {
-			return DIGITS.get(text);
+		if (LOW_NUMBERS.containsKey(text)) {
+			return LOW_NUMBERS.get(text);
 		}
 		if (text.endsWith("teen")) {
 			String prefix = text.substring(0, text.length() - "teen".length());
