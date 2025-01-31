@@ -85,13 +85,27 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			String word = text.substring(wordStart, wordEnd);
 			wordStart = wordEnd + 1;
 			if (word.equals("hundred")) {
+				if (previousWordValue < 0) {
+					throw error(text);
+				}
 				previousWordValue *= 100;
 			} else if (word.equals("thousand")) {
+				if (previousWordValue < 0) {
+					throw error(text);
+				}
 				parsedValue += 1000 * previousWordValue;
+				previousWordValue = -1;
 			} else if (word.endsWith("illion")) {
+				if (previousWordValue < 0) {
+					throw error(text);
+				}
 				int thousandsRank = 42; // TODO parse rank
 				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
+				previousWordValue = -1;
 			} else {
+				if (previousWordValue >= 0) {
+					throw error(text);
+				}
 				previousWordValue = processWord(word);
 			}
 		}
