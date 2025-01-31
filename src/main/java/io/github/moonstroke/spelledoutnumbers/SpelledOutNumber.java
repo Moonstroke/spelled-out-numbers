@@ -98,7 +98,9 @@ public class SpelledOutNumber extends Number implements Comparable<SpelledOutNum
 			return false;
 		}
 		SpelledOutNumber that = (SpelledOutNumber) o;
-		return this.locale.equals(that.locale) && this.doubleValue == that.doubleValue;
+		return this.locale.equals(that.locale)
+		       /* Bitwise check to avoid false positives (e.g. -0.0 == 0.0) */
+		       && Double.doubleToLongBits(this.doubleValue) == Double.doubleToLongBits(that.doubleValue);
 	}
 
 	/**
