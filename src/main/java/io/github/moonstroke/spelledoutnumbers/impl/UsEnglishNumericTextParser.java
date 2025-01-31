@@ -85,23 +85,26 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		if (text.endsWith("teen")) {
 			String prefix = text.substring(0, text.length() - "teen".length());
-			if (TEEN_PREFIXES.containsKey(prefix)) {
-				return 10. + TEEN_PREFIXES.get(prefix);
+			if (!TEEN_PREFIXES.containsKey(prefix)) {
+				throw error(text);
 			}
+			return 10. + TEEN_PREFIXES.get(prefix);
 		} else if (text.endsWith("ty")) {
 			String prefix = text.substring(0, text.length() - "ty".length());
-			if (TY_PREFIXES.containsKey(prefix)) {
-				return 10. * TY_PREFIXES.get(prefix);
+			if (!TY_PREFIXES.containsKey(prefix)) {
+				throw error(text);
 			}
+			return 10. * TY_PREFIXES.get(prefix);
 		}
 		int compositionIndex = text.indexOf("ty-");
 		if (compositionIndex > 0) {
 			String ten = text.substring(0, compositionIndex);
 			String unit = text.substring(compositionIndex + "ty-".length());
-			if (TY_PREFIXES.containsKey(ten) && DIGITS.containsKey(unit)) {
-				int digit = DIGITS.get(unit);
-				return 10. * TY_PREFIXES.get(ten) + digit;
+			if (!TY_PREFIXES.containsKey(ten) || !DIGITS.containsKey(unit)) {
+				throw error(text);
 			}
+			int digit = DIGITS.get(unit);
+			return 10. * TY_PREFIXES.get(ten) + digit;
 		}
 		throw error(text);
 	}
