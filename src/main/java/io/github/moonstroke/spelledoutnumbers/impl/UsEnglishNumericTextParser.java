@@ -18,7 +18,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 
-	/* Atomic transcriptions (that cannot be deconstructed to fit other parts of the algorithm) */
+	/* Transcriptions for numbers from one through nine */
+	private static final Map<String, Integer> DIGITS;
+	/* Transcriptions from numbers ten to twelve (do not fit other parts of the algorithm) */
 	private static final Map<String, Integer> LOW_NUMBERS;
 	/* Prefixes for -teen numbers */
 	private static final Map<String, Integer> TEEN_PREFIXES;
@@ -26,16 +28,18 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	private static final Map<String, Integer> TY_PREFIXES;
 
 	static {
+		DIGITS = new HashMap<>();
+		DIGITS.put("one", 1);
+		DIGITS.put("two", 2);
+		DIGITS.put("three", 3);
+		DIGITS.put("four", 4);
+		DIGITS.put("five", 5);
+		DIGITS.put("six", 6);
+		DIGITS.put("seven", 7);
+		DIGITS.put("eight", 8);
+		DIGITS.put("nine", 9);
+		
 		LOW_NUMBERS = new HashMap<>();
-		LOW_NUMBERS.put("one", 1);
-		LOW_NUMBERS.put("two", 2);
-		LOW_NUMBERS.put("three", 3);
-		LOW_NUMBERS.put("four", 4);
-		LOW_NUMBERS.put("five", 5);
-		LOW_NUMBERS.put("six", 6);
-		LOW_NUMBERS.put("seven", 7);
-		LOW_NUMBERS.put("eight", 8);
-		LOW_NUMBERS.put("nine", 9);
 		LOW_NUMBERS.put("ten", 10);
 		LOW_NUMBERS.put("eleven", 11);
 		LOW_NUMBERS.put("twelve", 12);
@@ -80,6 +84,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
+		if (DIGITS.containsKey(text)) {
+			return DIGITS.get(text);
+		}
 		if (LOW_NUMBERS.containsKey(text)) {
 			return LOW_NUMBERS.get(text);
 		}
@@ -98,11 +105,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (compositionIndex > 0) {
 			String ten = text.substring(0, compositionIndex);
 			String unit = text.substring(compositionIndex + "ty-".length());
-			if (TY_PREFIXES.containsKey(ten) && LOW_NUMBERS.containsKey(unit)) {
-				int digit = LOW_NUMBERS.get(unit);
-				if (digit < 10) {
-					return 10. * TY_PREFIXES.get(ten) + digit;
-				}
+			if (TY_PREFIXES.containsKey(ten) && DIGITS.containsKey(unit)) {
+				int digit = DIGITS.get(unit);
+				return 10. * TY_PREFIXES.get(ten) + digit;
 			}
 		}
 		throw new NumberFormatException("Unrecognized transcription: " + text);
