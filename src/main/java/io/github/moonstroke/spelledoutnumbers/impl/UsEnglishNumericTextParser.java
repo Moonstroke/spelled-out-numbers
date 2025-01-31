@@ -89,7 +89,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				throw error(text);
 			}
 			return 10. + TEEN_PREFIXES.get(prefix);
-		} else if (text.endsWith("ty")) {
+		}
+		if (text.endsWith("ty")) {
 			String prefix = text.substring(0, text.length() - "ty".length());
 			if (!TY_PREFIXES.containsKey(prefix)) {
 				throw error(text);
@@ -103,8 +104,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			if (!TY_PREFIXES.containsKey(ten) || !DIGITS.containsKey(unit)) {
 				throw error(text);
 			}
-			int digit = DIGITS.get(unit);
-			return 10. * TY_PREFIXES.get(ten) + digit;
+			return 10. * TY_PREFIXES.get(ten) + DIGITS.get(unit);
 		}
 		throw error(text);
 	}
