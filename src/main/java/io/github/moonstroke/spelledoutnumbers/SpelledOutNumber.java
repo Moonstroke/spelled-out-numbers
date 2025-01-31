@@ -7,7 +7,7 @@ import java.util.Locale;
  *
  * @author Moonstroke
  */
-public class SpelledOutNumber extends Number {
+public class SpelledOutNumber extends Number implements Comparable<SpelledOutNumber> {
 	private static final long serialVersionUID = -2400427537564695903L;
 
 	private final double doubleValue;
@@ -111,6 +111,14 @@ public class SpelledOutNumber extends Number {
 	@Override
 	public String toString() {
 		return transcription;
+	}
+
+	/**
+	 * Compare this number to the given one.
+	 */
+	@Override
+	public int compareTo(SpelledOutNumber o) {
+		return Double.compare(doubleValue, o.doubleValue);
 	}
 
 	/**
