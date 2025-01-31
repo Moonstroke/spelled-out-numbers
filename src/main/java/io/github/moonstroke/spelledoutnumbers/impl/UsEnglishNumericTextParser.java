@@ -19,6 +19,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 
 	private static final Map<String, Integer> DIGITS;
+	private static final Map<String, Integer> PREFIXES;
 
 	static {
 		DIGITS = new HashMap<>();
@@ -34,6 +35,17 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		DIGITS.put("ten", 10);
 		DIGITS.put("eleven", 11);
 		DIGITS.put("twelve", 12);
+		DIGITS.put("fourteen", 14);
+		DIGITS.put("twenty", 20);
+		DIGITS.put("forty", 40);
+
+		PREFIXES = new HashMap<>();
+		PREFIXES.put("thir", 3);
+		PREFIXES.put("fif", 5);
+		PREFIXES.put("six", 6);
+		PREFIXES.put("seven", 7);
+		PREFIXES.put("eigh", 8);
+		PREFIXES.put("nine", 9);
 	}
 
 
@@ -58,6 +70,17 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		if (DIGITS.containsKey(text)) {
 			return DIGITS.get(text);
+		}
+		if (text.endsWith("teen")) {
+			String prefix = text.substring(0, text.length() - "teen".length());
+			if (PREFIXES.containsKey(prefix)) {
+				return 10. + PREFIXES.get(prefix);
+			}
+		} else if (text.endsWith("ty")) {
+			String prefix = text.substring(0, text.length() - "ty".length());
+			if (PREFIXES.containsKey(prefix)) {
+				return 10. * PREFIXES.get(prefix);
+			}
 		}
 		throw new NumberFormatException("Unrecognized transcription: " + text);
 	}
