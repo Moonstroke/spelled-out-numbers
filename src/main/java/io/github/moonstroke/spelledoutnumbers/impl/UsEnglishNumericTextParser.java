@@ -1,6 +1,8 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import io.github.moonstroke.spelledoutnumbers.NumericTextParser;
 
@@ -14,6 +16,26 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	public Locale getSupportedLocale() {
 		return Locale.US;
 	}
+
+
+	private static final Map<String, Integer> DIGITS;
+
+	static {
+		DIGITS = new HashMap<>();
+		DIGITS.put("one", 1);
+		DIGITS.put("two", 2);
+		DIGITS.put("three", 3);
+		DIGITS.put("four", 4);
+		DIGITS.put("five", 5);
+		DIGITS.put("six", 6);
+		DIGITS.put("seven", 7);
+		DIGITS.put("eight", 8);
+		DIGITS.put("nine", 9);
+		DIGITS.put("ten", 10);
+		DIGITS.put("eleven", 11);
+		DIGITS.put("twelve", 12);
+	}
+
 
 	/**
 	 * {@inheritDoc}
@@ -33,6 +55,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		if (text.equals("zero")) {
 			return 0;
+		}
+		if (DIGITS.containsKey(text)) {
+			return DIGITS.get(text);
 		}
 		throw new NumberFormatException("Unrecognized transcription: " + text);
 	}
