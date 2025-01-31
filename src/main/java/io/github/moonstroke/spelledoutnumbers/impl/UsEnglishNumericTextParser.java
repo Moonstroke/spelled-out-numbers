@@ -77,7 +77,27 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		return processWord(text);
+		double parsedValue = 0;
+		int wordStart = 0;
+		int wordEnd;
+		double previousWordValue = -1;
+		while ((wordEnd = text.indexOf(' ', wordStart)) > 0) {
+			String word = text.substring(wordStart, wordEnd);
+			wordStart = wordEnd + 1;
+			if (word.equals("hundred")) {
+				previousWordValue *= 100;
+			} else if (word.equals("thousand")) {
+				parsedValue += 1000 * previousWordValue;
+			} else if (word.endsWith("illion")) {
+				int thousandsRank = 42; // TODO parse rank
+				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
+			} else {
+				previousWordValue = processWord(word);
+			}
+		}
+		String word = text.substring(wordStart);
+		parsedValue += processWord(word); // FIXME process correctly
+		return parsedValue;
 	}
 
 	private static double processWord(String word) throws NumberFormatException {
