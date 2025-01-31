@@ -103,6 +103,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				return 10. * TY_PREFIXES.get(ten) + digit;
 			}
 		}
-		throw new NumberFormatException("Unrecognized transcription: " + text);
+		throw error(text);
+	}
+
+	private static NumberFormatException error(String text) {
+		return new NumberFormatException("Unrecognized transcription: " + text);
 	}
 }
