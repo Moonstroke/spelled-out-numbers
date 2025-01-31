@@ -87,6 +87,10 @@ public class SpelledOutNumber extends Number implements Comparable<SpelledOutNum
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @apiNote This method is not fit for numeric comparison: it performs field-wise object comparison. Therefore, two
+	 *          objects referring to the same number will be considered unequal by this method. To perform numeric
+	 *          comparison, use {@link #compareTo}.
 	 */
 	@Override
 	public boolean equals(Object o) {
@@ -115,6 +119,9 @@ public class SpelledOutNumber extends Number implements Comparable<SpelledOutNum
 
 	/**
 	 * Compare this number to the given one.
+	 *
+	 * @apiNote The objects are compared numerically: only the numbers they represent are compared (not the locales,
+	 *          nor the transcriptions). To compare the objects as objects, prefer {@link #equals}.
 	 */
 	@Override
 	public int compareTo(SpelledOutNumber o) {
