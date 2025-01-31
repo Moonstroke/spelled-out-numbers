@@ -20,8 +20,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 	/* Atomic transcriptions (that cannot be deconstructed to fit other parts of the algorithm) */
 	private static final Map<String, Integer> LOW_NUMBERS;
-	/* Prefixes for -teen and -ty numbers that are the same for *both*: not 20, neither 14/40 */
-	private static final Map<String, Integer> PREFIXES;
+	/* Prefixes for -teen numbers */
+	private static final Map<String, Integer> TEEN_PREFIXES;
+	/* Prefixes for -ty numbers */
+	private static final Map<String, Integer> TY_PREFIXES;
 
 	static {
 		LOW_NUMBERS = new HashMap<>();
@@ -37,17 +39,25 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		LOW_NUMBERS.put("ten", 10);
 		LOW_NUMBERS.put("eleven", 11);
 		LOW_NUMBERS.put("twelve", 12);
-		LOW_NUMBERS.put("fourteen", 14);
-		LOW_NUMBERS.put("twenty", 20);
-		LOW_NUMBERS.put("forty", 40);
 
-		PREFIXES = new HashMap<>();
-		PREFIXES.put("thir", 3);
-		PREFIXES.put("fif", 5);
-		PREFIXES.put("six", 6);
-		PREFIXES.put("seven", 7);
-		PREFIXES.put("eigh", 8);
-		PREFIXES.put("nine", 9);
+		TEEN_PREFIXES = new HashMap<>();
+		TEEN_PREFIXES.put("thir", 3);
+		TEEN_PREFIXES.put("four", 4);
+		TEEN_PREFIXES.put("fif", 5);
+		TEEN_PREFIXES.put("six", 6);
+		TEEN_PREFIXES.put("seven", 7);
+		TEEN_PREFIXES.put("eigh", 8);
+		TEEN_PREFIXES.put("nine", 9);
+
+		TY_PREFIXES = new HashMap<>();
+		TY_PREFIXES.put("twen", 2);
+		TY_PREFIXES.put("thir", 3);
+		TY_PREFIXES.put("for", 4);
+		TY_PREFIXES.put("fif", 5);
+		TY_PREFIXES.put("six", 6);
+		TY_PREFIXES.put("seven", 7);
+		TY_PREFIXES.put("eigh", 8);
+		TY_PREFIXES.put("nine", 9);
 	}
 
 
@@ -75,13 +85,13 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		if (text.endsWith("teen")) {
 			String prefix = text.substring(0, text.length() - "teen".length());
-			if (PREFIXES.containsKey(prefix)) {
-				return 10. + PREFIXES.get(prefix);
+			if (TEEN_PREFIXES.containsKey(prefix)) {
+				return 10. + TEEN_PREFIXES.get(prefix);
 			}
 		} else if (text.endsWith("ty")) {
 			String prefix = text.substring(0, text.length() - "ty".length());
-			if (PREFIXES.containsKey(prefix)) {
-				return 10. * PREFIXES.get(prefix);
+			if (TY_PREFIXES.containsKey(prefix)) {
+				return 10. * TY_PREFIXES.get(prefix);
 			}
 		}
 		throw new NumberFormatException("Unrecognized transcription: " + text);
