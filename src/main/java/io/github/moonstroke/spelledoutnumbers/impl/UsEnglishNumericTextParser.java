@@ -94,6 +94,17 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				return 10. * TY_PREFIXES.get(prefix);
 			}
 		}
+		int compositionIndex = text.indexOf("ty-");
+		if (compositionIndex > 0) {
+			String ten = text.substring(0, compositionIndex);
+			String unit = text.substring(compositionIndex + "ty-".length());
+			if (TY_PREFIXES.containsKey(ten) && LOW_NUMBERS.containsKey(unit)) {
+				int digit = LOW_NUMBERS.get(unit);
+				if (digit < 10) {
+					return 10. * TY_PREFIXES.get(ten) + digit;
+				}
+			}
+		}
 		throw new NumberFormatException("Unrecognized transcription: " + text);
 	}
 }
