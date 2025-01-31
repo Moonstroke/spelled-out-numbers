@@ -1,6 +1,5 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -28,40 +27,41 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	private static final Map<String, Integer> TY_PREFIXES;
 
 	static {
-		DIGITS = new HashMap<>();
-		DIGITS.put("one", 1);
-		DIGITS.put("two", 2);
-		DIGITS.put("three", 3);
-		DIGITS.put("four", 4);
-		DIGITS.put("five", 5);
-		DIGITS.put("six", 6);
-		DIGITS.put("seven", 7);
-		DIGITS.put("eight", 8);
-		DIGITS.put("nine", 9);
-		
-		LOW_NUMBERS = new HashMap<>();
-		LOW_NUMBERS.put("ten", 10);
-		LOW_NUMBERS.put("eleven", 11);
-		LOW_NUMBERS.put("twelve", 12);
-
-		TEEN_PREFIXES = new HashMap<>();
-		TEEN_PREFIXES.put("thir", 3);
-		TEEN_PREFIXES.put("four", 4);
-		TEEN_PREFIXES.put("fif", 5);
-		TEEN_PREFIXES.put("six", 6);
-		TEEN_PREFIXES.put("seven", 7);
-		TEEN_PREFIXES.put("eigh", 8);
-		TEEN_PREFIXES.put("nine", 9);
-
-		TY_PREFIXES = new HashMap<>();
-		TY_PREFIXES.put("twen", 2);
-		TY_PREFIXES.put("thir", 3);
-		TY_PREFIXES.put("for", 4);
-		TY_PREFIXES.put("fif", 5);
-		TY_PREFIXES.put("six", 6);
-		TY_PREFIXES.put("seven", 7);
-		TY_PREFIXES.put("eigh", 8);
-		TY_PREFIXES.put("nine", 9);
+		DIGITS = Map.of(
+				"one", 1,
+				"two", 2,
+				"three", 3,
+				"four", 4,
+				"five", 5,
+				"six", 6,
+				"seven", 7,
+				"eight", 8,
+				"nine", 9
+		);
+		LOW_NUMBERS = Map.of(
+				"ten", 10,
+				"eleven", 11,
+				"twelve", 12
+		);
+		TEEN_PREFIXES = Map.of(
+				"thir", 3,
+				"four", 4,
+				"fif", 5,
+				"six", 6,
+				"seven", 7,
+				"eigh", 8,
+				"nine", 9
+		);
+		TY_PREFIXES = Map.of(
+				"twen", 2,
+				"thir", 3,
+				"for", 4,
+				"fif", 5,
+				"six", 6,
+				"seven", 7,
+				"eigh", 8,
+				"nine", 9
+		);
 	}
 
 
