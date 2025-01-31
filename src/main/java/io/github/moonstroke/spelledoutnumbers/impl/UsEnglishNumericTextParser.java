@@ -34,6 +34,6 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		return Double.NaN; // TODO
+		throw new NumberFormatException("Unrecognized transcription: " + text);
 	}
 }
