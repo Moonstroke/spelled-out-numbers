@@ -18,51 +18,44 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 
 	/* Transcriptions for numbers from one through nine */
-	private static final Map<String, Integer> DIGITS;
+	private static final Map<String, Integer> DIGITS = Map.of(
+			"one", 1,
+			"two", 2,
+			"three", 3,
+			"four", 4,
+			"five", 5,
+			"six", 6,
+			"seven", 7,
+			"eight", 8,
+			"nine", 9
+	);
 	/* Transcriptions from numbers ten to twelve (do not fit other parts of the algorithm) */
-	private static final Map<String, Integer> LOW_NUMBERS;
+	private static final Map<String, Integer> LOW_NUMBERS = Map.of(
+			"ten", 10,
+			"eleven", 11,
+			"twelve", 12
+	);
 	/* Prefixes for -teen numbers */
-	private static final Map<String, Integer> TEEN_PREFIXES;
+	private static final Map<String, Integer> TEEN_PREFIXES = Map.of(
+			"thir", 3,
+			"four", 4,
+			"fif", 5,
+			"six", 6,
+			"seven", 7,
+			"eigh", 8,
+			"nine", 9
+	);
 	/* Prefixes for -ty numbers */
-	private static final Map<String, Integer> TY_PREFIXES;
-
-	static {
-		DIGITS = Map.of(
-				"one", 1,
-				"two", 2,
-				"three", 3,
-				"four", 4,
-				"five", 5,
-				"six", 6,
-				"seven", 7,
-				"eight", 8,
-				"nine", 9
-		);
-		LOW_NUMBERS = Map.of(
-				"ten", 10,
-				"eleven", 11,
-				"twelve", 12
-		);
-		TEEN_PREFIXES = Map.of(
-				"thir", 3,
-				"four", 4,
-				"fif", 5,
-				"six", 6,
-				"seven", 7,
-				"eigh", 8,
-				"nine", 9
-		);
-		TY_PREFIXES = Map.of(
-				"twen", 2,
-				"thir", 3,
-				"for", 4,
-				"fif", 5,
-				"six", 6,
-				"seven", 7,
-				"eigh", 8,
-				"nine", 9
-		);
-	}
+	private static final Map<String, Integer> TY_PREFIXES = Map.of(
+			"twen", 2,
+			"thir", 3,
+			"for", 4,
+			"fif", 5,
+			"six", 6,
+			"seven", 7,
+			"eigh", 8,
+			"nine", 9
+	);
 
 
 	/**
