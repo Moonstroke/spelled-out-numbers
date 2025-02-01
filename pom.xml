@@ -27,4 +27,39 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-invoker-plugin</artifactId>
+				<version>3.9.0</version>
+				<configuration>
+					<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+					<!-- Append build log to the console and not in a separate file -->
+					<streamLogs>true</streamLogs>
+					<noLog>true</noLog>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>install</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>run-benchmarks</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<pom>benchmarks/pom.xml</pom>
+							<postBuildHookScript>run-benchmarks</postBuildHookScript>
+							<scriptVariables>
+								<projectId>${project.artifactId}</projectId>
+								<projectVersion>${project.version}</projectVersion>
+							</scriptVariables>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
