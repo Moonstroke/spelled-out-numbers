@@ -78,12 +78,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return 0;
 		}
 		double parsedValue = 0;
-		int wordStart = 0;
-		int wordEnd;
 		double previousWordValue = -1;
-		while ((wordEnd = text.indexOf(' ', wordStart)) > 0) {
-			String word = text.substring(wordStart, wordEnd);
-			wordStart = wordEnd + 1;
+		for (String word : text.split(" ")) {
 			if (word.equals("hundred")) {
 				if (previousWordValue < 0) {
 					throw error(text);
@@ -109,8 +105,6 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				previousWordValue = processWord(word);
 			}
 		}
-		String word = text.substring(wordStart);
-		parsedValue += processWord(word); // FIXME process correctly
 		return parsedValue;
 	}
 
