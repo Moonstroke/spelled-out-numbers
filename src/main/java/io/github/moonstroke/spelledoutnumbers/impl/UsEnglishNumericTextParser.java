@@ -91,8 +91,11 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return 0;
 		}
 		double parsedValue = 0;
+		String[] words = text.split(" ");
+		int i = 0;
 		double previousWordValue = -1;
-		for (String word : text.split(" ")) {
+		for (; i < words.length; ++i) {
+			String word = words[i];
 			if (word.equals("hundred")) {
 				if (previousWordValue < 0 || previousWordValue >= 10) {
 					throw error(text);
