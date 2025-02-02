@@ -57,17 +57,17 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			"nine", 9
 	);
 
-	private static final Map<String, Integer> ZILLION_NAMES = Map.of(
-			"million", 2,
-			"billion", 3,
-			"trillion", 4,
-			"quadrillion", 5,
-			"quintillion", 6,
-			"sextillion", 7,
-			"septillion", 8,
-			"octillion", 9,
-			"nonillion", 10,
-			"decillion", 11
+	private static final Map<String, Integer> ZILLION_PREFIXES = Map.of(
+			"m", 2,
+			"b", 3,
+			"tr", 4,
+			"quadr", 5,
+			"quint", 6,
+			"sext", 7,
+			"sept", 8,
+			"oct", 9,
+			"non", 10,
+			"dec", 11
 	);
 
 
@@ -124,9 +124,11 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		return parsedValue;
 	}
 
+	/* Prerequisite: rankName ends in illion */
 	private static int parseThousandsRank(String rankName) {
-		if (ZILLION_NAMES.containsKey(rankName)) {
-			return ZILLION_NAMES.get(rankName);
+		String prefix = rankName.substring(0, rankName.length() - "illion".length());
+		if (ZILLION_PREFIXES.containsKey(prefix)) {
+			return ZILLION_PREFIXES.get(prefix);
 		}
 		throw error(rankName);
 	}
