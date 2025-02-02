@@ -57,6 +57,19 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			"nine", 9
 	);
 
+	private static final Map<String, Integer> ZILLION_NAMES = Map.of(
+			"million", 2,
+			"billion", 3,
+			"trillion", 4,
+			"quadrillion", 5,
+			"quintillion", 6,
+			"sextillion", 7,
+			"septillion", 8,
+			"octillion", 9,
+			"nonillion", 10,
+			"decillion", 11
+	);
+
 
 	/**
 	 * {@inheritDoc}
@@ -112,7 +125,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 	private static int parseThousandsRank(String rankName) {
-		return 42; // TODO parse rank
+		if (ZILLION_NAMES.containsKey(rankName)) {
+			return ZILLION_NAMES.get(rankName);
+		}
+		throw error(rankName);
 	}
 
 	private static double processWord(String word) throws NumberFormatException {
