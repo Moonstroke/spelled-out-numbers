@@ -81,7 +81,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		double previousWordValue = -1;
 		for (String word : text.split(" ")) {
 			if (word.equals("hundred")) {
-				if (previousWordValue < 0) {
+				if (previousWordValue < 0 || previousWordValue >= 10) {
 					throw error(text);
 				}
 				previousWordValue *= 100;
