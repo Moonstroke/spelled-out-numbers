@@ -194,7 +194,12 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		/* Accumulate all decimals as integrals to avoid rounding issues */
 		double acc = 0;
 		for (int i = from; i < words.length; ++i) {
-			acc = 10 * acc + DIGITS.get(words[i]);
+			String word = words[i];
+			Integer digit = DIGITS.get(word);
+			if (digit == null) {
+				throw error(word);
+			}
+			acc = 10 * acc + digit;
 		}
 		/* Push everything down in the decimals */
 		return acc / Math.pow(10, words.length - from);
