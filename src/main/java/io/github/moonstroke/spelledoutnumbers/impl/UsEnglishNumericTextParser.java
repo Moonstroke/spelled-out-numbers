@@ -134,6 +134,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				/* Trailing decimal separator: not accepted */
 				throw error(text);
 			}
+			parsedValue += parseDecimalPart(words, i + 1);
 		}
 		return parsedValue;
 	}
@@ -187,5 +188,15 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return 10. * TY_PREFIXES.get(ten) + DIGITS.get(unit);
 		}
 		throw error(word);
+	}
+
+	private static double parseDecimalPart(String[] words, int from) {
+		/* Accumulate all decimals as integrals to avoid rounding issues */
+		double acc = 0;
+		for (int i = from; i < words.length; ++i) {
+			acc = 10 * acc + DIGITS.get(words[i]);
+		}
+		/* Push everything down in the decimals */
+		return acc / Math.pow(10, words.length - from);
 	}
 }
