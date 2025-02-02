@@ -96,6 +96,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		double previousWordValue = -1;
 		for (; i < words.length; ++i) {
 			String word = words[i];
+			if (word.equals("point")) {
+				/* Decimal separator found; end of the integral part */
+				break;
+			}
 			if (word.equals("hundred")) {
 				if (previousWordValue < 0 || previousWordValue >= 10) {
 					throw error(text);
