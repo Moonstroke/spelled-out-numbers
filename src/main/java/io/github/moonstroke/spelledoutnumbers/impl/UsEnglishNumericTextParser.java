@@ -128,6 +128,13 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (previousWordValue > 0) {
 			parsedValue += previousWordValue;
 		}
+		if (i < words.length) {
+			/* We stopped before the end: decimal separator found */
+			if (i + 1 == words.length) {
+				/* Trailing decimal separator: not accepted */
+				throw error(text);
+			}
+		}
 		return parsedValue;
 	}
 
