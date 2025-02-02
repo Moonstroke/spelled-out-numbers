@@ -124,13 +124,22 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		return parsedValue;
 	}
 
+	private static NumberFormatException error(String text) {
+		return new NumberFormatException("Unrecognized transcription: " + text);
+	}
+
 	/* Prerequisite: rankName ends in illion */
 	private static int parseThousandsRank(String rankName) {
-		String prefix = rankName.substring(0, rankName.length() - "illion".length());
+		String prefix = removeSuffix(rankName, "illion");
 		if (ZILLION_PREFIXES.containsKey(prefix)) {
 			return ZILLION_PREFIXES.get(prefix);
 		}
 		throw error(rankName);
+	}
+
+	/* Prerequisite: word ends in suffix */
+	private static String removeSuffix(String word, String suffix) {
+		return word.substring(0, word.length() - suffix.length());
 	}
 
 	private static double processWord(String word) throws NumberFormatException {
@@ -141,14 +150,14 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return LOW_NUMBERS.get(word);
 		}
 		if (word.endsWith("teen")) {
-			String prefix = word.substring(0, word.length() - "teen".length());
+			String prefix = removeSuffix(word, "teen");
 			if (!TEEN_PREFIXES.containsKey(prefix)) {
 				throw error(word);
 			}
 			return 10. + TEEN_PREFIXES.get(prefix);
 		}
 		if (word.endsWith("ty")) {
-			String prefix = word.substring(0, word.length() - "ty".length());
+			String prefix = removeSuffix(word, "ty");
 			if (!TY_PREFIXES.containsKey(prefix)) {
 				throw error(word);
 			}
@@ -164,9 +173,5 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return 10. * TY_PREFIXES.get(ten) + DIGITS.get(unit);
 		}
 		throw error(word);
-	}
-
-	private static NumberFormatException error(String text) {
-		return new NumberFormatException("Unrecognized transcription: " + text);
 	}
 }
