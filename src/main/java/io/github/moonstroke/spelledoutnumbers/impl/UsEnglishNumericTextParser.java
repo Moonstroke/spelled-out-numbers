@@ -95,7 +95,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				if (previousWordValue < 0) {
 					throw error(text);
 				}
-				int thousandsRank = 42; // TODO parse rank
+				int thousandsRank = parseThousandsRank(word);
 				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
 				previousWordValue = -1;
 			} else {
@@ -109,6 +109,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			parsedValue += previousWordValue;
 		}
 		return parsedValue;
+	}
+
+	private static int parseThousandsRank(String rankName) {
+		return 42; // TODO parse rank
 	}
 
 	private static double processWord(String word) throws NumberFormatException {
