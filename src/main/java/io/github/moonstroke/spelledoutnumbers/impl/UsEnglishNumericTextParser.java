@@ -105,6 +105,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				previousWordValue = processWord(word);
 			}
 		}
+		if (previousWordValue > 0) {
+			parsedValue += previousWordValue;
+		}
 		return parsedValue;
 	}
 
