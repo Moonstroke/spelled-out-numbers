@@ -249,7 +249,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		transcriber.append(words.get(0));
 	}
 
-	/* Prerequisite: 0 <= longValue <= Long.MAX_VALUE */
+	/* Prerequisite: longValue >= 0 */
 	private static void spellOutAsLong(long longValue, List<String> words) {
 		/* A quintillion is the highest power of a thousand (a "rank") in the range of a long */
 		/* ... and 5 is the index of the quintillion's prefix in the ranks array. For longs,
@@ -299,7 +299,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		words.add(DIGITS_TEENS[(int) longValue]);
 	}
 
-	/* Prerequisite: Long.MAX_VALUE < doubleValue */
+	/* Prerequisite: doubleValue > Long.MAX_VALUE */
 	/* No risk of losing a fractional part: in this range, only integral numbers are representable */
 	private static BigInteger asBigInteger(double doubleValue) {
 		/* Subtract the significand width so that 1 <= significand < 2 */
@@ -307,7 +307,7 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 		/* Clip mantissa bits and add back implicit leading unit bit */
 		long significand = (Double.doubleToLongBits(doubleValue) & 0xfffffffffffffL) + 0x10000000000000L;
 		int additionalPowersOfTwo = Long.numberOfTrailingZeros(significand);
-		/* Move powers of two from the significand to the exponent to minimize trhe former and maximize the latter */
+		/* Move powers of two from the significand to the exponent to minimize the former and maximize the latter */
 		exponent += additionalPowersOfTwo;
 		significand >>= additionalPowersOfTwo;
 		BigInteger bigExponent;
