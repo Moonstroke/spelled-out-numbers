@@ -69,6 +69,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.5.0</version>
+				<executions>
+					<execution>
+						<id>run-benchmarks</id>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<phase>verify</phase>
+						<configuration>
+							<executable>java</executable>
+							<commandlineArgs>-jar ${project.build.directory}/@project.artifactId@-benchmarks-@project.version@.jar</commandlineArgs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

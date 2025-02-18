@@ -1,1 +1,0 @@
-exec("java -jar benchmarks/target/" + projectId + "-benchmarks-" + projectVersion + ".jar");
