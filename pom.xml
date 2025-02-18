@@ -50,6 +50,7 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
+							<settingsFile>benchmarks/settings.xml</settingsFile>
 							<pom>benchmarks/pom.xml</pom>
 							<postBuildHookScript>run-benchmarks</postBuildHookScript>
 							<scriptVariables>
