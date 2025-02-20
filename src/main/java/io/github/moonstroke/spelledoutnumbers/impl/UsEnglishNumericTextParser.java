@@ -1,6 +1,5 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -140,8 +139,31 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		return parsedValue;
 	}
 
+	/* Prerequisite: text != null; it can be empty, in which case a single empty word is yielded */
 	private static Iterator<String> iterate(String text) {
-		return Arrays.asList(text.split(" ")).iterator();
+		return new Iterator<String>() {
+			private int currentWordIndex = 0;
+
+
+			@Override
+			public String next() {
+				int nextWordIndex = text.indexOf(' ', currentWordIndex + 1);
+				String word;
+				if (nextWordIndex < 0) {
+					word = text.substring(currentWordIndex);
+					currentWordIndex = -1;
+				} else {
+					word = text.substring(currentWordIndex, nextWordIndex);
+					currentWordIndex = nextWordIndex + 1;
+				}
+				return word;
+			}
+
+			@Override
+			public boolean hasNext() {
+				return currentWordIndex >= 0;
+			}
+		};
 	}
 
 	private static NumberFormatException error(String text) {
