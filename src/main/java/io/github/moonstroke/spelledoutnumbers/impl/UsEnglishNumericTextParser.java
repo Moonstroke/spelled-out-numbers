@@ -1,5 +1,7 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -91,13 +93,16 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			return 0;
 		}
 		double parsedValue = 0;
-		String[] words = text.split(" ");
-		int i = 0;
+		Iterator<String> wordIterator = iterate(text);
 		double previousWordValue = -1;
-		for (; i < words.length; ++i) {
-			String word = words[i];
+		while (wordIterator.hasNext()) {
+			String word = wordIterator.next();
 			if (word.equals("point")) {
 				/* Decimal separator found; end of the integral part */
+				if (!wordIterator.hasNext()) {
+					/* Trailing decimal separator: not accepted */
+					throw error(text);
+				}
 				break;
 			}
 			if (word.equals("hundred")) {
@@ -128,15 +133,15 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (previousWordValue > 0) {
 			parsedValue += previousWordValue;
 		}
-		if (i < words.length) {
+		if (wordIterator.hasNext()) {
 			/* We stopped before the end: decimal separator found */
-			if (i + 1 == words.length) {
-				/* Trailing decimal separator: not accepted */
-				throw error(text);
-			}
-			parsedValue += parseDecimalPart(words, i + 1);
+			parsedValue += parseDecimalPart(wordIterator);
 		}
 		return parsedValue;
+	}
+
+	private static Iterator<String> iterate(String text) {
+		return Arrays.asList(text.split(" ")).iterator();
 	}
 
 	private static NumberFormatException error(String text) {
@@ -190,11 +195,13 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		throw error(word);
 	}
 
-	private static double parseDecimalPart(String[] words, int from) {
+	private static double parseDecimalPart(Iterator<String> wordIterator) {
 		/* Accumulate all decimals as integrals to avoid rounding issues */
 		double acc = 0;
-		for (int i = from; i < words.length; ++i) {
-			String word = words[i];
+		int decimalsCount = 0;
+		while (wordIterator.hasNext()) {
+			String word = wordIterator.next();
+			++decimalsCount;
 			Integer digit = DIGITS.get(word);
 			if (digit == null) {
 				throw error(word);
@@ -202,6 +209,6 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			acc = 10 * acc + digit;
 		}
 		/* Push everything down in the decimals */
-		return acc / Math.pow(10, words.length - from);
+		return acc / Math.pow(10, decimalsCount);
 	}
 }
