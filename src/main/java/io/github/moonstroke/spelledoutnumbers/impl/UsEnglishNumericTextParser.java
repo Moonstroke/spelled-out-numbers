@@ -122,6 +122,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				int thousandsRank = parseThousandsRank(word);
 				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
 				previousWordValue = -1;
+			} else if (previousWordValue >= 100) {
+				previousWordValue += processWord(word);
 			} else {
 				if (previousWordValue >= 0) {
 					throw error(text);
