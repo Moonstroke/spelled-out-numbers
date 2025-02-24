@@ -121,11 +121,14 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				}
 				int thousandsRank = parseThousandsRank(word);
 				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
+				/* Word group processed entirely. Reset value to be able to detect invalid transcriptions */
 				previousWordValue = -1;
 			} else if (previousWordValue >= 100) {
+				/* The current word group is in the hundreds */
 				previousWordValue += processWord(word);
 			} else {
 				if (previousWordValue >= 0) {
+					/* There is an unfinished word group, but there shouldn't be */
 					throw error(text);
 				}
 				previousWordValue = processWord(word);
