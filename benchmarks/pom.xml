@@ -32,6 +32,31 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<!-- JAVA_HOME might point to a JVM different from the one found on the PATH.
+		So, if that variable is defined, use it in priority; otherwise, fall back to PATH -->
+		<profile>
+			<id>using-java-home</id>
+			<activation>
+				<property>
+					<name>env.JAVA_HOME</name>
+				</property>
+			</activation>
+			<properties>
+				<javaExe>${JAVA_HOME}/bin/java</javaExe>
+			</properties>
+		</profile>
+		<profile>
+			<id>using-path</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<javaExe>java</javaExe>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -81,7 +106,7 @@
 						</goals>
 						<phase>verify</phase>
 						<configuration>
-							<executable>java</executable>
+							<executable>${javaExe}</executable>
 							<commandlineArgs>-jar ${project.build.directory}/@project.artifactId@-benchmarks-@project.version@.jar</commandlineArgs>
 						</configuration>
 					</execution>
