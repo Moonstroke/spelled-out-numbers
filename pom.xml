@@ -27,35 +27,46 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-invoker-plugin</artifactId>
-				<version>3.9.0</version>
-				<configuration>
-					<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-					<!-- Append build log to the console and not in a separate file -->
-					<streamLogs>true</streamLogs>
-					<noLog>true</noLog>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>install</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>run-benchmarks</id>
-						<goals>
-							<goal>run</goal>
-						</goals>
+
+	<profiles>
+		<profile>
+			<id>with-benchmarks</id>
+			<activation>
+				<property>
+					<name>!skipBenchmarks</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-invoker-plugin</artifactId>
+						<version>3.9.0</version>
 						<configuration>
-							<settingsFile>benchmarks/settings.xml</settingsFile>
-							<pom>benchmarks/pom.xml</pom>
+							<localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+							<!-- Append build log to the console and not in a separate file -->
+							<streamLogs>true</streamLogs>
+							<noLog>true</noLog>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+						<executions>
+							<execution>
+								<goals>
+									<goal>install</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>run-benchmarks</id>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<settingsFile>benchmarks/settings.xml</settingsFile>
+									<pom>benchmarks/pom.xml</pom>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
