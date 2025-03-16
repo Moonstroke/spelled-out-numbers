@@ -1,8 +1,8 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import io.github.moonstroke.spelledoutnumbers.NumericTextParser;
 
@@ -19,56 +19,56 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 
 	/* Transcriptions for numbers from one through nine */
-	private static final Map<String, Integer> DIGITS = Map.of(
-			"one", 1,
-			"two", 2,
-			"three", 3,
-			"four", 4,
-			"five", 5,
-			"six", 6,
-			"seven", 7,
-			"eight", 8,
-			"nine", 9
+	private static final List<String> DIGITS = List.of(
+			"one",
+			"two",
+			"three",
+			"four",
+			"five",
+			"six",
+			"seven",
+			"eight",
+			"nine"
 	);
 	/* Transcriptions from numbers ten to twelve (do not fit other parts of the algorithm) */
-	private static final Map<String, Integer> LOW_NUMBERS = Map.of(
-			"ten", 10,
-			"eleven", 11,
-			"twelve", 12
+	private static final List<String> LOW_NUMBERS = List.of(
+			"ten",
+			"eleven",
+			"twelve"
 	);
 	/* Prefixes for -teen numbers */
-	private static final Map<String, Integer> TEEN_PREFIXES = Map.of(
-			"thir", 3,
-			"four", 4,
-			"fif", 5,
-			"six", 6,
-			"seven", 7,
-			"eigh", 8,
-			"nine", 9
+	private static final List<String> TEEN_PREFIXES = List.of(
+			"thir",
+			"four",
+			"fif",
+			"six",
+			"seven",
+			"eigh",
+			"nine"
 	);
 	/* Prefixes for -ty numbers */
-	private static final Map<String, Integer> TY_PREFIXES = Map.of(
-			"twen", 2,
-			"thir", 3,
-			"for", 4,
-			"fif", 5,
-			"six", 6,
-			"seven", 7,
-			"eigh", 8,
-			"nine", 9
-	);
+	private static final List<String> TY_PREFIXES = List.of(
+			"twen",
+			"thir",
+			"for",
+			"fif",
+			"six",
+			"seven",
+			"eigh",
+			"nine"
+		);
 
-	private static final Map<String, Integer> ZILLION_PREFIXES = Map.of(
-			"m", 2,
-			"b", 3,
-			"tr", 4,
-			"quadr", 5,
-			"quint", 6,
-			"sext", 7,
-			"sept", 8,
-			"oct", 9,
-			"non", 10,
-			"dec", 11
+	private static final List<String> ZILLION_PREFIXES = List.of(
+			"m",
+			"b",
+			"tr",
+			"quadr",
+			"quint",
+			"sext",
+			"sept",
+			"oct",
+			"non",
+			"dec"
 	);
 
 
@@ -178,10 +178,11 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	/* Prerequisite: rankName ends in illion */
 	private static int parseThousandsRank(String rankName) {
 		String prefix = removeSuffix(rankName, "illion");
-		if (ZILLION_PREFIXES.containsKey(prefix)) {
-			return ZILLION_PREFIXES.get(prefix);
+		int rank = ZILLION_PREFIXES.indexOf(prefix);
+		if (rank < 0) {
+			throw error(rankName);
 		}
-		throw error(rankName);
+		return rank + 2;
 	}
 
 	/* Prerequisite: word ends in suffix */
@@ -190,34 +191,40 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 	private static double processWord(String word) throws NumberFormatException {
-		if (DIGITS.containsKey(word)) {
-			return DIGITS.get(word);
+		int digit = DIGITS.indexOf(word);
+		if (digit >= 0) {
+			return digit + 1;
 		}
-		if (LOW_NUMBERS.containsKey(word)) {
-			return LOW_NUMBERS.get(word);
+		digit = LOW_NUMBERS.indexOf(word);
+		if (digit >= 0) {
+			return digit + 10;
 		}
 		if (word.endsWith("teen")) {
 			String prefix = removeSuffix(word, "teen");
-			if (!TEEN_PREFIXES.containsKey(prefix)) {
+			digit = TEEN_PREFIXES.indexOf(prefix);
+			if (digit < 0) {
 				throw error(word);
 			}
-			return 10. + TEEN_PREFIXES.get(prefix);
+			return digit + 13;
 		}
 		if (word.endsWith("ty")) {
 			String prefix = removeSuffix(word, "ty");
-			if (!TY_PREFIXES.containsKey(prefix)) {
+			digit = TY_PREFIXES.indexOf(prefix);
+			if (digit < 0) {
 				throw error(word);
 			}
-			return 10. * TY_PREFIXES.get(prefix);
+			return 10. * (digit + 2);
 		}
 		int compositionIndex = word.indexOf("ty-");
 		if (compositionIndex > 0) {
 			String ten = word.substring(0, compositionIndex);
 			String unit = word.substring(compositionIndex + "ty-".length());
-			if (!TY_PREFIXES.containsKey(ten) || !DIGITS.containsKey(unit)) {
+			int tenDigit = TY_PREFIXES.indexOf(ten);
+			int unitDigit = DIGITS.indexOf(unit);
+			if (tenDigit < 0 || unitDigit < 0) {
 				throw error(word);
 			}
-			return 10. * TY_PREFIXES.get(ten) + DIGITS.get(unit);
+			return 10. * (tenDigit + 2) + unitDigit + 1;
 		}
 		throw error(word);
 	}
@@ -229,11 +236,11 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		while (wordIterator.hasNext()) {
 			String word = wordIterator.next();
 			++decimalsCount;
-			Integer digit = DIGITS.get(word);
-			if (digit == null) {
+			int digit = DIGITS.indexOf(word);
+			if (digit < 0) {
 				throw error(word);
 			}
-			acc = 10 * acc + digit;
+			acc = 10 * acc + digit + 1;
 		}
 		/* Push everything down in the decimals */
 		return acc / Math.pow(10, decimalsCount);
