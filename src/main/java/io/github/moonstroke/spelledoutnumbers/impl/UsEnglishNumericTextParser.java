@@ -3,6 +3,8 @@ package io.github.moonstroke.spelledoutnumbers.impl;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.github.moonstroke.spelledoutnumbers.NumericTextParser;
 
@@ -175,12 +177,26 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		return new NumberFormatException("Unrecognized transcription: " + text);
 	}
 
+
+	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile("^illion$"); // TODO
+
+	/* Declared public to be accessible to test classes. TODO when done, make private */
+	public static int parseBigRankName(String rankName) {
+		int rank = 1; /* The first *illion is the second rank */
+		Matcher matcher = BIG_RANK_NAME_PATTERN.matcher(rankName);
+		if (!matcher.matches()) {
+			throw error(rankName);
+		}
+		// TODO extract rank digits from matcher
+		return rank;
+	}
+
 	/* Prerequisite: rankName ends in illion */
 	private static int parseThousandsRank(String rankName) {
 		String prefix = removeSuffix(rankName, "illion");
 		int rank = ZILLION_PREFIXES.indexOf(prefix);
 		if (rank < 0) {
-			throw error(rankName);
+			return parseBigRankName(rankName);
 		}
 		return rank + 2;
 	}
