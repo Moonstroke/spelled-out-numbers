@@ -181,7 +181,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile(
 			"^(un|duo|tre(?:s)?|quattuor|quin|se[sx]?|septe[mn]?|octo|nove[mn]?)?"
-			+ "(dec|(?:vi|tri|quadra|quinqua|sexa|septua|octo|nona)gint)?"
+			+ "(dec|(?:vi|tri|quadra|quinqua|sexa|septua|octo|nona)gint|cent)?"
 			+ "illion$"
 	); // TODO
 	private static final Map<String, Integer> ZILLION_UNITS = Map.ofEntries(
@@ -211,7 +211,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			"sexagint",
 			"septuagint",
 			"octogint",
-			"nonagint"
+			"nonagint",
+			"cent"
 	);
 
 	/* Declared public to be accessible to test classes. TODO when done, make private */
