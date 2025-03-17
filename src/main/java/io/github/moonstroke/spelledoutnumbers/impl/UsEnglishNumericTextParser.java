@@ -178,7 +178,11 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 
-	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile("^illion$"); // TODO
+	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile(
+			"^(un|duo|quattuor|quin|octo)?"
+			+ "(dec|(?:vi|tri|quadra|quinqua|sexa|septua|octo|nona)gint)?"
+			+ "illion$"
+	); // TODO
 
 	/* Declared public to be accessible to test classes. TODO when done, make private */
 	public static int parseBigRankName(String rankName) {
