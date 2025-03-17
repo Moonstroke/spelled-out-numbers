@@ -14,4 +14,10 @@ class UsEnglishBigIllionParserTest {
 	void testParserParsesValidValues(String rankName, int expectedRankValue) {
 		assertEquals(expectedRankValue, UsEnglishNumericTextParser.parseBigRankName(rankName));
 	}
+
+	@ParameterizedTest
+	@CsvFileSource(resources = {"/invalid-illions.txt"})
+	void testParserFailsOnInvalidTranscriptions(String input) {
+		assertThrows(NumberFormatException.class, () -> UsEnglishNumericTextParser.parseBigRankName(input));
+	}
 }
