@@ -191,7 +191,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (!matcher.matches()) {
 			throw error(rankName);
 		}
-		// TODO extract rank digits from matcher
+		String unit = matcher.group(1);
+		String ten = matcher.group(2);
+		// TODO use unit and ten
 		return rank;
 	}
 
