@@ -3,7 +3,6 @@ package io.github.moonstroke.spelledoutnumbers.impl;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -222,16 +221,16 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			+ ")"
 			+ "illion$"
 	); // TODO
-	private static final Map<String, Integer> ZILLION_UNITS = Map.ofEntries(
-			Map.entry("un", 1), 
-			Map.entry("duo", 2),
-			Map.entry("tre", 3),
-			Map.entry("quattuor", 4),
-			Map.entry("quin", 5),
-			Map.entry("se", 6),
-			Map.entry("septe", 7),
-			Map.entry("octo", 8),
-			Map.entry("nove", 9)
+	private static final List<String> ZILLION_UNITS = List.of(
+			"un",
+			"duo",
+			"tre",
+			"quattuor",
+			"quin",
+			"se",
+			"septe",
+			"octo",
+			"nove"
 	);
 	private static final List<String> ZILLION_TENS = List.of(
 			"dec",
@@ -255,7 +254,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		String unit = matcher.group(1);
 		if (unit != null) {
-			rank += ZILLION_UNITS.get(unit);
+			rank += ZILLION_UNITS.indexOf(unit) + 1;
 		}
 		String ten = matcher.group(2);
 		return rank + (ZILLION_TENS.indexOf(ten) + 1) * 10;
