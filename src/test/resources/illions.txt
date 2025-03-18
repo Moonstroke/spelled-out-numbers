@@ -90,3 +90,11 @@ octononagintillion,99
 novenonagintillion,100
 centillion,101
 uncentillion,102
+duocentillion,103
+trescentillion,104
+quattuorcentillion,105
+quincentillion,106
+sexcentillion,107
+septencentillion,108
+octocentillion,109
+novencentillion,110
