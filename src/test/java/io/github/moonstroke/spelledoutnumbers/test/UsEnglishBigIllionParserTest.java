@@ -10,7 +10,7 @@ import io.github.moonstroke.spelledoutnumbers.impl.UsEnglishNumericTextParser;
 class UsEnglishBigIllionParserTest {
 
 	@ParameterizedTest
-	@CsvFileSource(resources = { "/illions-up-to-101.txt" })
+	@CsvFileSource(resources = { "/illions.txt" })
 	void testParserParsesValidValues(String rankName, int expectedRankValue) {
 		assertEquals(expectedRankValue, UsEnglishNumericTextParser.parseBigRankName(rankName));
 	}

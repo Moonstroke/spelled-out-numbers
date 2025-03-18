@@ -186,7 +186,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				 * that depends on the combination of the units and tens digits: */
 				+ "(?<=tre)(?:"
     				/* {(3, 2), (3, 3), (3, 4), (3, 5), (3, 8)} -> S */
-					+ "s(?=vi|tri|quadr|quin|oct)"
+					+ "s(?=vi|tri|quadr|quin|oct|cent)"
 					/* {(3, 1), (3, 6), (3, 7), (3, 9)} -> none */
 					+ "|(?=dec|se|non)"
 				+ ")"
@@ -194,7 +194,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 					/* {(6, 2), (6, 3), (6, 4), (6, 5)} -> S */
 					+ "s(?=vi|tr|quadr|quin)"
 					/* (6, 8) -> X */
-					+ "|x(?=oct)"
+					+ "|x(?=oct|cent)"
 					/* {(6, 1), (6, 6), (6, 7), (6, 9)} -> none */
 					+ "|(?=dec|se|non)"
 				+ ")"
@@ -203,7 +203,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 					/* {(7, 2), (7, 8), (9, 2), (9, 8)} -> M */
     				+ "m(?=vi|oct)"
     				/* {(7, 1), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7), (9, 1), (9, 3), (9, 4), (9, 5), (9, 6), (9, 7)} -> N */
-    				+ "|n(?=dec|tr|quadr|quin|se)"
+    				+ "|n(?=dec|tr|quadr|quin|se|cent)"
     				/* {(7, 9), (9, 9)} -> none */
     				+ "|(?=non)"
 				+ ")"
