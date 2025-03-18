@@ -179,48 +179,42 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 
 	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile(
+            /* Capture the unit component of the rank name (may be absent, in which case it is 0) */
 			"^(un|duo|tre|quattuor|quin|se|septe|octo|nove)?"
 			+ "(?:"
+				/* Process (and discard) an optional interstitial letter
+				 * that depends on the combination of the units and tens digits: */
 				+ "(?<=tre)(?:"
-					+ "s(?="
-						+ "(?:vi|tri|quadra|quinqua|octo)gint"
-					+ ")"
-					+ "|(?="
-    					+ "dec"
-    					+ "|(?:sex|septu|non)agint"
-					+ ")"
+    				/* {(3, 2), (3, 3), (3, 4), (3, 5), (3, 8)} -> S */
+					+ "s(?=(?:vi|tri|quadra|quinqua|octo)gint)"
+					/* {(3, 1), (3, 6), (3, 7), (3, 9)} -> none */
+					+ "|(?=dec|(?:sex|septu|non)agint)"
 				+ ")"
 				+ "|(?<=se)(?:"
-					+ "s(?="
-						+ "(?:vi|tri|quadra|quinqua)gint"
-					+ ")"
+					/* {(6, 2), (6, 3), (6, 4), (6, 5)} -> S */
+					+ "s(?=(?:vi|tri|quadra|quinqua)gint)"
+					/* (6, 8) -> X */
 					+ "|x(?=octogint)"
-					+ "|(?="
-    					+ "dec"
-    					+ "|(?:sex|septu|non)agint"
-					+ ")"
+					/* {(6, 1), (6, 6), (6, 7), (6, 9)} -> none */
+					+ "|(?=dec|(?:sex|septu|non)agint)"
 				+ ")"
-				+ "|(?<="
-					+ "(?:sept|nov)e"
-				+ ")"
-				+ "(?:"
-    				+ "m(?="
-    					+ "(?:vi|octo)gint"
-    				+ ")"
-    				+ "|n(?="
-    					+ "dec|(?:tri|quadra|quinqua|sexa|septua)gint"
-    				+ ")"
+				/* 7 and 9 are processed identically */
+				+ "|(?<=(?:sept|nov)e)(?:"
+					/* {(7, 2), (7, 8), (9, 2), (9, 8)} -> M */
+    				+ "m(?=(?:vi|octo)gint)"
+    				/* {(7, 1), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7), (9, 1), (9, 3), (9, 4), (9, 5), (9, 6), (9, 7)} -> N */
+    				+ "|n(?=dec|(?:tri|quadra|quinqua|sexa|septua)gint)"
+    				/* {(7, 9), (9, 9)} -> none */
     				+ "|(?=nonagint)"
 				+ ")"
-				+ "|(?<!"
-					+ "(?:tr|s|sept|nov)e"
-				+ ")"
+				+ "|(?<!(?:tr|s|sept|nov)e)" /* No interstitial letters for all other combinations */
 			+ ")"
 			+ "("
+				/* Capturing group of the tens component of the rank name */
 				+ "dec|(?:vi|tri|quadra|quinqua|sexa|septua|octo|nona)gint|cent"
 			+ ")"
 			+ "illion$"
-	); // TODO
+	);
 	private static final List<String> ZILLION_UNITS = List.of(
 			"un",
 			"duo",
