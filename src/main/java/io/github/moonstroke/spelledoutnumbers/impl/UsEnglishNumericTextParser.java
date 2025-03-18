@@ -180,37 +180,43 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 
 	private static final Pattern BIG_RANK_NAME_PATTERN = Pattern.compile(
-			"^("
-				+ "un|duo|tre(?:"
+			"^(un|duo|tre|quattuor|quin|se|septe|octo|nove)?"
+			+ "(?:"
+				+ "(?<=tre)(?:"
 					+ "s(?="
 						+ "(?:vi|tri|quadra|quinqua|octo)gint"
 					+ ")"
 					+ "|(?="
-						+ "dec"
-						+ "|(?:sex|septu|non)agint"
+    					+ "dec"
+    					+ "|(?:sex|septu|non)agint"
 					+ ")"
 				+ ")"
-				+ "|quattuor|quin|se(?:"
+				+ "|(?<=se)(?:"
 					+ "s(?="
 						+ "(?:vi|tri|quadra|quinqua)gint"
 					+ ")"
 					+ "|x(?=octogint)"
 					+ "|(?="
-						+ "dec"
-						+ "|(?:sex|septu|non)agint"
+    					+ "dec"
+    					+ "|(?:sex|septu|non)agint"
 					+ ")"
-				+ ")|(?:sept|nov)e(?:"
-					+ "m(?="
-						+ "(?:vi|octo)gint"
-					+ ")"
-					+ "|n(?="
-						+ "dec"
-						+ "|(?:tri|quadra|quinqua|sexa|septua)gint"
-					+ ")"
-					+ "|(?=nonagint)"
 				+ ")"
-				+ "|octo"
-			+ ")?"
+				+ "|(?<="
+					+ "(?:sept|nov)e"
+				+ ")"
+				+ "(?:"
+    				+ "m(?="
+    					+ "(?:vi|octo)gint"
+    				+ ")"
+    				+ "|n(?="
+    					+ "dec|(?:tri|quadra|quinqua|sexa|septua)gint"
+    				+ ")"
+    				+ "|(?=nonagint)"
+				+ ")"
+				+ "|(?<!"
+					+ "(?:tr|s|sept|nov)e"
+				+ ")"
+			+ ")"
 			+ "("
 				+ "dec|(?:vi|tri|quadra|quinqua|sexa|septua|octo|nona)gint|cent"
 			+ ")"
@@ -220,19 +226,12 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			Map.entry("un", 1), 
 			Map.entry("duo", 2),
 			Map.entry("tre", 3),
-			Map.entry("tres", 3),
 			Map.entry("quattuor", 4),
 			Map.entry("quin", 5),
 			Map.entry("se", 6),
-			Map.entry("ses", 6),
-			Map.entry("sex", 6),
 			Map.entry("septe", 7),
-			Map.entry("septem", 7),
-			Map.entry("septen", 7),
 			Map.entry("octo", 8),
-			Map.entry("nove", 9),
-			Map.entry("novem", 9),
-			Map.entry("noven", 9)
+			Map.entry("nove", 9)
 	);
 	private static final List<String> ZILLION_TENS = List.of(
 			"dec",
