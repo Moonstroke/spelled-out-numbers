@@ -1,5 +1,6 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -93,7 +94,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		double parsedValue = 0;
+		BigDecimal parsedValue = BigDecimal.ZERO;
 		Iterator<String> wordIterator = iterate(text);
 		double previousWordValue = -1;
 		while (wordIterator.hasNext()) {
@@ -115,14 +116,14 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				if (previousWordValue < 0) {
 					throw error(text);
 				}
-				parsedValue += 1000 * previousWordValue;
+				parsedValue = parsedValue.add(BigDecimal.valueOf(1000 * previousWordValue));
 				previousWordValue = -1;
 			} else if (word.endsWith("illion")) {
 				if (previousWordValue < 0) {
 					throw error(text);
 				}
 				int thousandsRank = parseThousandsRank(word);
-				parsedValue += Math.pow(1000, thousandsRank) * previousWordValue;
+				parsedValue = parsedValue.add(BigDecimal.TEN.pow(thousandsRank * 3).multiply(BigDecimal.valueOf(previousWordValue)));
 				/* Word group processed entirely. Reset value to be able to detect invalid transcriptions */
 				previousWordValue = -1;
 			} else if (previousWordValue >= 100) {
@@ -137,13 +138,13 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			}
 		}
 		if (previousWordValue > 0) {
-			parsedValue += previousWordValue;
+			parsedValue = parsedValue.add(BigDecimal.valueOf(previousWordValue));
 		}
 		if (wordIterator.hasNext()) {
 			/* We stopped before the end: decimal separator found */
-			parsedValue += parseDecimalPart(wordIterator);
+			parsedValue = parsedValue.add(BigDecimal.valueOf(parseDecimalPart(wordIterator)));
 		}
-		return parsedValue;
+		return parsedValue.doubleValue();
 	}
 
 	/* Prerequisite: text != null; it can be empty, in which case a single empty word is yielded */
