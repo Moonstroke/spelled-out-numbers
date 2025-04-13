@@ -96,7 +96,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		BigInteger parsedValue = BigInteger.ZERO;
 		Iterator<String> wordIterator = iterate(text);
-		double previousWordValue = -1;
+		int previousWordValue = -1;
 		while (wordIterator.hasNext()) {
 			String word = wordIterator.next();
 			if (word.equals("point")) {
@@ -116,14 +116,14 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				if (previousWordValue < 0) {
 					throw error(text);
 				}
-				parsedValue = parsedValue.add(BigInteger.valueOf(1000 * (long) previousWordValue));
+				parsedValue = parsedValue.add(BigInteger.valueOf(1000 * previousWordValue));
 				previousWordValue = -1;
 			} else if (word.endsWith("illion")) {
 				if (previousWordValue < 0) {
 					throw error(text);
 				}
 				int thousandsRank = parseThousandsRank(word);
-				parsedValue = parsedValue.add(BigInteger.TEN.pow(thousandsRank * 3).multiply(BigInteger.valueOf((long) previousWordValue)));
+				parsedValue = parsedValue.add(BigInteger.TEN.pow(thousandsRank * 3).multiply(BigInteger.valueOf(previousWordValue)));
 				/* Word group processed entirely. Reset value to be able to detect invalid transcriptions */
 				previousWordValue = -1;
 			} else if (previousWordValue >= 100) {
@@ -138,7 +138,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			}
 		}
 		if (previousWordValue > 0) {
-			parsedValue = parsedValue.add(BigInteger.valueOf((long) previousWordValue));
+			parsedValue = parsedValue.add(BigInteger.valueOf(previousWordValue));
 		}
 		if (wordIterator.hasNext()) {
 			/* We stopped before the end: decimal separator found */
@@ -270,7 +270,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		return word.substring(0, word.length() - suffix.length());
 	}
 
-	private static double processWord(String word) throws NumberFormatException {
+	private static int processWord(String word) throws NumberFormatException {
 		int digit = DIGITS.indexOf(word);
 		if (digit >= 0) {
 			return digit + 1;
@@ -293,7 +293,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			if (digit < 0) {
 				throw error(word);
 			}
-			return 10. * (digit + 2);
+			return 10 * (digit + 2);
 		}
 		int compositionIndex = word.indexOf("ty-");
 		if (compositionIndex > 0) {
@@ -304,7 +304,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			if (tenDigit < 0 || unitDigit < 0) {
 				throw error(word);
 			}
-			return 10. * (tenDigit + 2) + unitDigit + 1;
+			return 10 * (tenDigit + 2) + unitDigit + 1;
 		}
 		throw error(word);
 	}
