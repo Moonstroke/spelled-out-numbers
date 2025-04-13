@@ -221,8 +221,11 @@ public class UsEnglishNumberSpeller implements NumberSpeller {
 
 	/* Prerequisite: doubleValue >= 0 */
 	private static void spellOutIntegralPart(double doubleValue, StringBuilder transcriber) {
+		if (doubleValue < 1.) {
+			transcriber.append("zero");
+			return;
+		}
 		List<String> words = new ArrayList<>();
-
 		if (doubleValue < 0x1p63) {
 			/* Lower than Long.MAX_VALUE (not possibly equal to it, as it is not representable
 			 * as a IEEE-754 double) => fits in a long. Process it as such */
