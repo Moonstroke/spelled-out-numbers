@@ -1,6 +1,5 @@
 package io.github.moonstroke.spelledoutnumbers.impl;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
@@ -143,7 +142,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		}
 		if (wordIterator.hasNext()) {
 			/* We stopped before the end: decimal separator found */
-			return new BigDecimal(parsedValue).add(BigDecimal.valueOf(parseDecimalPart(wordIterator))).doubleValue();
+			return parsedValue.doubleValue() + parseDecimalPart(wordIterator);
 		}
 		return parsedValue.doubleValue();
 	}
