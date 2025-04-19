@@ -95,11 +95,27 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 		if (text.equals("zero")) {
 			return 0;
 		}
-		BigInteger parsedValue = BigInteger.ZERO;
 		Iterator<String> wordIterator = iterate(text);
+		String word = null;
+		/* Special case: decimal numbers less than one. These start with "zero point "
+		 * and are the only transcriptions that may contain the word zero (besides 0 itself),
+		 * as the integral part, but also in the decimal part as well. */
+		if (wordIterator.hasNext()) {
+			String firstWord = wordIterator.next();
+			if (firstWord.equals("zero")) {
+				/* Unguarded access to the next word because the exact transcription "zero" has already been checked */
+				if (wordIterator.next().equals("point")) {
+					return parseDecimalPart(wordIterator);
+				} else {
+					/* "zero (something)" is not a valid transcription of anything */
+					error(text);
+				}
+			}
+			word = firstWord;
+		}
+		BigInteger parsedValue = BigInteger.ZERO;
 		int previousWordValue = -1;
-		while (wordIterator.hasNext()) {
-			String word = wordIterator.next();
+		while (true) {
 			if (word.equals("point")) {
 				/* Decimal separator found; end of the integral part */
 				if (!wordIterator.hasNext()) {
@@ -137,6 +153,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 				}
 				previousWordValue = processWord(word);
 			}
+			if (!wordIterator.hasNext()) {
+				break;
+			}
+			word = wordIterator.next();
 		}
 		if (previousWordValue > 0) {
 			parsedValue = parsedValue.add(BigInteger.valueOf(previousWordValue));
