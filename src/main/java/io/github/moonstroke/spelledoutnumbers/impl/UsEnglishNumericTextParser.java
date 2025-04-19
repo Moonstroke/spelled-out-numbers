@@ -323,7 +323,12 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			}
 			acc = 10 * acc + digit;
 		}
-		/* Push everything down in the decimals */
+		/* Push everything down in the decimals by steps of one sextillion
+		 * (highest power of ten exactly representable as a double) */
+		while (decimalsCount > 21) {
+			acc /= 1e21;
+			decimalsCount -= 21;
+		}
 		return acc / Math.pow(10, decimalsCount);
 	}
 }
