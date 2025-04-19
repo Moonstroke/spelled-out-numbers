@@ -42,6 +42,11 @@ public class UsEnglishNumberSpellerBenchmark {
 		bh.consume(speller.spellOut(Double.MAX_VALUE));
 	}
 
+	@Benchmark
+	public void benchmarkDoubleMinValue(Blackhole bh) {
+		bh.consume(speller.spellOut(Double.MIN_VALUE));
+	}
+
 
 	public static void main(String[] args) throws RunnerException {
 		Options opts = new OptionsBuilder()
