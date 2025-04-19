@@ -21,8 +21,9 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 	}
 
 
-	/* Transcriptions for numbers from one through nine */
+	/* Transcriptions for numbers from zero to nine */
 	private static final List<String> DIGITS = List.of(
+			"zero",
 			"one",
 			"two",
 			"three",
@@ -272,8 +273,8 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 
 	private static int processWord(String word) throws NumberFormatException {
 		int digit = DIGITS.indexOf(word);
-		if (digit >= 0) {
-			return digit + 1;
+		if (digit > 0) {
+			return digit;
 		}
 		digit = LOW_NUMBERS.indexOf(word);
 		if (digit >= 0) {
@@ -301,10 +302,10 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			String unit = word.substring(compositionIndex + "ty-".length());
 			int tenDigit = TY_PREFIXES.indexOf(ten);
 			int unitDigit = DIGITS.indexOf(unit);
-			if (tenDigit < 0 || unitDigit < 0) {
+			if (tenDigit < 0 || unitDigit <= 0) {
 				throw error(word);
 			}
-			return 10 * (tenDigit + 2) + unitDigit + 1;
+			return 10 * (tenDigit + 2) + unitDigit;
 		}
 		throw error(word);
 	}
@@ -320,7 +321,7 @@ public class UsEnglishNumericTextParser implements NumericTextParser {
 			if (digit < 0) {
 				throw error(word);
 			}
-			acc = 10 * acc + digit + 1;
+			acc = 10 * acc + digit;
 		}
 		/* Push everything down in the decimals */
 		return acc / Math.pow(10, decimalsCount);
